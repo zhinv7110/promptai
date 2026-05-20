@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "title": "PromptAI - AI Image Prompt Tools & Library",
+    "description": "Generate, enhance, and discover AI image prompts. Free tools for Midjourney, Stable Diffusion, DALL-E. Bilingual prompt library with thousands of curated prompts."
+  },
+  "nav": {
+    "home": "Home",
+    "tools": "Tools",
+    "promptLibrary": "Prompt Library",
+    "blog": "Blog",
+    "about": "About",
+    "pricing": "Pricing"
+  },
+  "home": {
+    "hero": {
+      "title": "AI Image Prompt Tools",
+      "subtitle": "Create stunning AI art with our free prompt tools. Generate, enhance, and discover the perfect prompts for Midjourney, Stable Diffusion, and DALL-E.",
+      "cta": {
+        "primary": "Try Prompt Generator",
+        "secondary": "Browse Library"
+      },
+      "search": "Search prompts, tools, and guides..."
+    },
+    "popularTools": {
+      "title": "Popular Tools",
+      "subtitle": "Everything you need to create perfect prompts"
+    },
+    "categories": {
+      "title": "Browse by Category",
+      "subtitle": "Find prompts for every style and use case"
+    },
+    "latestArticles": {
+      "title": "Latest Articles",
+      "subtitle": "Tips, tutorials, and AI art insights"
+    },
+    "popularPrompts": {
+      "title": "Trending Prompts",
+      "subtitle": "What the community is using right now"
+    }
+  },
+  "tools": {
+    "promptGenerator": {
+      "name": "Prompt Generator",
+      "description": "Generate AI image prompts from simple keywords",
+      "input": "Describe what you want to create...",
+      "generate": "Generate Prompt",
+      "copy": "Copy Prompt"
+    },
+    "promptEnhancer": {
+      "name": "Prompt Enhancer",
+      "description": "Improve and optimize your existing prompts",
+      "input": "Paste your prompt to enhance...",
+      "enhance": "Enhance Prompt",
+      "copy": "Copy Result"
+    },
+    "styleGenerator": {
+      "name": "Style Generator",
+      "description": "Generate prompts in specific artistic styles",
+      "input": "Describe your subject...",
+      "generate": "Generate Style Prompt",
+      "copy": "Copy Prompt"
+    },
+    "imageAnalyzer": {
+      "name": "Image Analyzer",
+      "description": "Analyze images and generate prompt suggestions",
+      "upload": "Upload Image",
+      "analyze": "Analyze"
+    },
+    "negativePrompt": {
+      "name": "Negative Prompt Generator",
+      "description": "Generate negative prompts for cleaner results",
+      "generate": "Generate Negative Prompt",
+      "copy": "Copy Negative Prompt"
+    }
+  },
+  "common": {
+    "viewAll": "View All",
+    "readMore": "Read More",
+    "copySuccess": "Copied!",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "noResults": "No results found"
+  },
+  "footer": {
+    "about": "PromptAI is a free platform for AI image prompt creation and discovery. Built for artists, designers, and creators.",
+    "tools": "Tools",
+    "resources": "Resources",
+    "company": "Company",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
+  }
+}

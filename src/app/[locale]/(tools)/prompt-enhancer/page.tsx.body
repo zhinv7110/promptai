@@ -1,0 +1,424 @@
+
+import { useState, useCallback, useEffect } from 'react';
+import { useParams } from 'next/navigation';
+import {
+  Copy, Check, Wand2, History, Trash2,
+  ChevronDown, Sparkles, Loader2, Gauge, Lightbulb,
+  RefreshCw, Zap, ArrowRight,
+} from 'lucide-react';
+
+// Enhancement modifier library
+const QUALITY_BOOSTS = [
+  '8K, ultra-detailed, masterpiece, professional',
+  'hyperrealistic, sharp focus, breathtaking, award-winning',
+  'cinematic lighting, editorial photography, 4K',
+  'intricate details, stunning composition, high-end retouching',
+];
+
+const LIGHTING_BOOSTS = [
+  'cinematic lighting, volumetric light, dramatic shadows',
+  'golden hour, warm sunset light, atmospheric haze',
+  'soft studio lighting, professional three-point setup',
+  'natural daylight, diffused lighting, bright ambiance',
+  'neon lights, cyberpunk glow, vibrant reflections',
+];
+
+const COMPOSITION_BOOSTS = [
+  'rule of thirds, balanced composition, leading lines',
+  'shallow depth of field, beautiful bokeh, sharp subject',
+  'wide angle, expansive view, deep depth of field',
+  'symmetrical composition, centered subject, minimalist',
+];
+
+const STYLE_BOOSTS = [
+  'trending on artstation, concept art, digital painting',
+  'photorealistic, hyperrealistic, professional photography',
+  'cinematic, film grain, anamorphic lens, 35mm',
+  'minimalist, clean composition, elegant simplicity',
+];
+
+const ARTIST_REFERENCES: Record<string, string[]> = {
+  portrait: ['Gregory Crewdson inspired', 'Annie Leibovitz style', 'editorial portrait'],
+  landscape: ['Ansel Adams inspired', 'atmospheric landscape', 'National Geographic style'],
+  fantasy: ['Thomas Kinkade inspired', 'magical realism', 'dreamlike fantasy art'],
+  anime: ['Studio Ghibli inspired', 'Makoto Shinkai aesthetic', 'anime key visual'],
+  architecture: ['Julius Shulman inspired', 'architectural digest', 'modernist photography'],
+  abstract: ['Wassily Kandinsky inspired', 'abstract expressionism', 'gallery quality'],
+};
+
+interface HistoryItem {
+  id: string;
+  original: string;
+  enhanced: string;
+  boosts: string[];
+  timestamp: number;
+}
+
+// Detect what category a prompt falls into
+function detectCategory(prompt: string): string | null {
+  const patterns: Record<string, RegExp[]> = {
+    portrait: [/portrait/i, /face/i, /person/i, /model/i, /woman/i, /man/i, /girl/i, /boy/i],
+    landscape: [/landscape/i, /mountain/i, /ocean/i, /forest/i, /sky/i, /sunset/i, /nature/i],
+    fantasy: [/fantasy/i, /magic/i, /dragon/i, /castle/i, /enchanted/i, /mythical/i],
+    anime: [/anime/i, /manga/i, /ghibli/i, /cartoon/i, /2d/i, /cel.shaded/i],
+    architecture: [/building/i, /interior/i, /architecture/i, /house/i, /cityscape/i, /room/i],
+    abstract: [/abstract/i, /geometric/i, /pattern/i, /fluid/i, /surreal/i],
+  };
+  for (const [cat, regexes] of Object.entries(patterns)) {
+    if (regexes.some((r) => r.test(prompt))) return cat;
+  }
+  return null;
+}
+
+function enhancePrompt(prompt: string, options: {
+  boostQuality: boolean;
+  boostLighting: boolean;
+  boostComposition: boolean;
+  addStyleRef: boolean;
+  addArtistRef: boolean;
+}): { enhanced: string; boosts: string[] } {
+  const parts = [prompt.trim()];
+  const applied: string[] = [];
+
+  if (options.boostQuality) {
+    const q = QUALITY_BOOSTS[Math.floor(Math.random() * QUALITY_BOOSTS.length)];
+    parts.push(q);
+    applied.push('Quality boost');
+  }
+
+  if (options.boostLighting) {
+    const l = LIGHTING_BOOSTS[Math.floor(Math.random() * LIGHTING_BOOSTS.length)];
+    parts.push(l);
+    applied.push('Lighting enhancement');
+  }
+
+  if (options.boostComposition) {
+    const c = COMPOSITION_BOOSTS[Math.floor(Math.random() * COMPOSITION_BOOSTS.length)];
+    parts.push(c);
+    applied.push('Composition improvement');
+  }
+
+  if (options.addStyleRef) {
+    const s = STYLE_BOOSTS[Math.floor(Math.random() * STYLE_BOOSTS.length)];
+    parts.push(s);
+    applied.push('Style reference');
+  }
+
+  if (options.addArtistRef) {
+    const cat = detectCategory(prompt);
+    if (cat && ARTIST_REFERENCES[cat]) {
+      const a = ARTIST_REFERENCES[cat][Math.floor(Math.random() * ARTIST_REFERENCES[cat].length)];
+      parts.push(a);
+      applied.push('Artist reference');
+    }
+  }
+
+  return { enhanced: parts.join(', '), boosts: applied };
+}
+
+function estimateScore(prompt: string): number {
+  const words = prompt.split(/[,\s]+/).filter(Boolean);
+  let score = 40;
+  if (words.length > 15) score += 10;
+  if (words.length > 30) score += 15;
+  if (words.length > 50) score += 15;
+  if (/(8k|4k|hd|detailed|sharp|high quality|masterpiece)/i.test(prompt)) score += 10;
+  if (/(lighting|cinematic|photorealistic|render|style|composition)/i.test(prompt)) score += 10;
+  return Math.min(score, 100);
+}
+
+export default function PromptEnhancerPage() {
+  const { locale } = useParams<{ locale: string }>();
+  const isZh = locale === 'zh';
+
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
+  const [enhancing, setEnhancing] = useState(false);
+  const [score, setScore] = useState(0);
+  const [improvement, setImprovement] = useState(0);
+  const [appliedBoosts, setAppliedBoosts] = useState<string[]>([]);
+  const [copied, setCopied] = useState('');
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [showHistory, setShowHistory] = useState(false);
+
+  // Options
+  const [boostQuality, setBoostQuality] = useState(true);
+  const [boostLighting, setBoostLighting] = useState(true);
+  const [boostComposition, setBoostComposition] = useState(true);
+  const [addStyleRef, setAddStyleRef] = useState(true);
+  const [addArtistRef, setAddArtistRef] = useState(false);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('pe-history');
+    if (saved) setHistory(JSON.parse(saved));
+  }, []);
+
+  const handleEnhance = useCallback(() => {
+    if (!input.trim()) return;
+    setEnhancing(true);
+
+    // Simulate processing delay for UX
+    setTimeout(() => {
+      const originalScore = estimateScore(input);
+      const result = enhancePrompt(input, {
+        boostQuality,
+        boostLighting,
+        boostComposition,
+        addStyleRef,
+        addArtistRef,
+      });
+      const newScore = estimateScore(result.enhanced);
+
+      setOutput(result.enhanced);
+      setScore(newScore);
+      setImprovement(newScore - originalScore);
+      setAppliedBoosts(result.boosts);
+      setEnhancing(false);
+
+      const item: HistoryItem = {
+        id: Date.now().toString(),
+        original: input,
+        enhanced: result.enhanced,
+        boosts: result.boosts,
+        timestamp: Date.now(),
+      };
+      const updated = [item, ...history].slice(0, 20);
+      setHistory(updated);
+      localStorage.setItem('pe-history', JSON.stringify(updated));
+    }, 600);
+  }, [input, boostQuality, boostLighting, boostComposition, addStyleRef, addArtistRef, history]);
+
+  const copyText = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(label);
+    setTimeout(() => setCopied(''), 2000);
+  };
+
+  const clearHistory = () => {
+    setHistory([]);
+    localStorage.removeItem('pe-history');
+  };
+
+  const loadFromHistory = (item: HistoryItem) => {
+    setInput(item.original);
+    setOutput(item.enhanced);
+    setScore(estimateScore(item.enhanced));
+    setImprovement(estimateScore(item.enhanced) - estimateScore(item.original));
+    setAppliedBoosts(item.boosts);
+    setShowHistory(false);
+  };
+
+  const regenerate = () => handleEnhance();
+
+  return (
+    <div className="max-w-5xl mx-auto">
+      {/* Header */}
+      <div className="flex items-center gap-4 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+        <div className="inline-flex rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 p-3.5 text-white shadow-lg shadow-cyan-500/25">
+          <Wand2 className="h-6 w-6" />
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+            {isZh ? '提示词增强器' : 'Prompt Enhancer'}
+          </h1>
+          <p className="text-zinc-500 dark:text-zinc-400">
+            {isZh ? '输入现有提示词，自动增强质量和细节' : 'Paste your prompt, auto-enhance quality and detail'}
+          </p>
+        </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-5">
+        {/* Input Panel */}
+        <div className="lg:col-span-2 space-y-4">
+          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl p-5 shadow-sm">
+            <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-2">
+              {isZh ? '粘贴你的提示词' : 'Paste your prompt'}
+            </label>
+            <textarea
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder={isZh
+                ? '例如：a cat sitting on a table'
+                : 'e.g. a cat sitting on a table'}
+              rows={5}
+              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-3 text-sm font-mono text-zinc-900 dark:text-zinc-50 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 transition-all resize-none"
+            />
+
+            <button
+              onClick={handleEnhance}
+              disabled={!input.trim() || enhancing}
+              className="mt-3 w-full inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/25 hover:shadow-xl hover:from-cyan-400 hover:to-blue-500 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {enhancing ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Wand2 className="h-4 w-4" />
+              )}
+              {enhancing ? (isZh ? '增强中...' : 'Enhancing...') : (isZh ? '增强提示词' : 'Enhance Prompt')}
+            </button>
+          </div>
+
+          {/* Enhancement Options */}
+          <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl p-5 shadow-sm space-y-3">
+            <h3 className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider mb-3">
+              {isZh ? '增强选项' : 'Enhancement Options'}
+            </h3>
+            {[
+              { key: 'boostQuality', val: boostQuality, set: setBoostQuality, icon: Sparkles, en: 'Quality boost', zh: '画质提升' },
+              { key: 'boostLighting', val: boostLighting, set: setBoostLighting, icon: Lightbulb, en: 'Lighting detail', zh: '光线细节' },
+              { key: 'boostComposition', val: boostComposition, set: setBoostComposition, icon: Gauge, en: 'Composition', zh: '构图优化' },
+              { key: 'addStyleRef', val: addStyleRef, set: setAddStyleRef, icon: Zap, en: 'Style reference', zh: '风格参考' },
+              { key: 'addArtistRef', val: addArtistRef, set: setAddArtistRef, icon: Wand2, en: 'Artist reference', zh: '艺术家参考' },
+            ].map(({ key, val, set, icon: Icon, en, zh }) => (
+              <label key={key} className="flex items-center justify-between cursor-pointer group">
+                <span className="flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-zinc-200 transition-colors">
+                  <Icon className="h-3.5 w-3.5" />
+                  {isZh ? zh : en}
+                </span>
+                <button
+                  role="switch"
+                  aria-checked={val}
+                  onClick={() => set(!val)}
+                  className={`relative inline-flex h-5 w-9 shrink-0 rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none ${
+                    val ? 'bg-cyan-500' : 'bg-zinc-200 dark:bg-zinc-700'
+                  }`}
+                >
+                  <span className={`pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow transform ring-0 transition duration-200 ${
+                    val ? 'translate-x-4' : 'translate-x-0'
+                  }`} />
+                </button>
+              </label>
+            ))}
+          </div>
+        </div>
+
+        {/* Output Panel */}
+        <div className="lg:col-span-3 space-y-4">
+          {output ? (
+            <>
+              {/* Score comparison */}
+              <div className="flex items-center gap-3">
+                <div className="flex-1 rounded-xl bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-xs text-zinc-500">
+                  <span className="font-mono">{estimateScore(input)}</span> original
+                </div>
+                <ArrowRight className="h-4 w-4 text-zinc-400" />
+                <div className="flex-1 rounded-xl bg-cyan-100 dark:bg-cyan-900/30 px-3 py-1.5 text-xs font-semibold text-cyan-700 dark:text-cyan-400">
+                  <span className="font-mono">{score}</span> enhanced {improvement > 0 && <span className="text-green-500">(+{improvement})</span>}
+                </div>
+              </div>
+
+              {/* Applied boosts */}
+              {appliedBoosts.length > 0 && (
+                <div className="flex flex-wrap gap-1.5">
+                  {appliedBoosts.map((b) => (
+                    <span key={b} className="inline-flex items-center gap-1 rounded-full bg-cyan-50 dark:bg-cyan-950/30 px-2.5 py-0.5 text-xs font-medium text-cyan-600 dark:text-cyan-400">
+                      <Check className="h-3 w-3" /> {b}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Main output */}
+              <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl p-6 shadow-sm">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-900/50 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:text-green-400">
+                    <Gauge className="h-3 w-3" /> {score}/100
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={regenerate}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
+                    >
+                      <RefreshCw className="h-3.5 w-3.5" />
+                      {isZh ? '重新生成' : 'Regenerate'}
+                    </button>
+                    <button
+                      onClick={() => copyText(output, 'main')}
+                      className="inline-flex items-center gap-1.5 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 px-3 py-1.5 text-xs font-medium text-cyan-700 dark:text-cyan-400 hover:bg-cyan-200 dark:hover:bg-cyan-900/50 transition-colors"
+                    >
+                      {copied === 'main' ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+                      {copied === 'main' ? (isZh ? '已复制' : 'Copied!') : (isZh ? '复制' : 'Copy')}
+                    </button>
+                  </div>
+                </div>
+                <p className="text-sm font-mono leading-relaxed text-zinc-800 dark:text-zinc-200 whitespace-pre-wrap">
+                  {output}
+                </p>
+              </div>
+
+              {/* Before/After comparison */}
+              <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl p-5 shadow-sm">
+                <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-3">
+                  {isZh ? '前后对比' : 'Before & After'}
+                </h3>
+                <div className="space-y-3">
+                  <div className="rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-3">
+                    <span className="text-xs text-zinc-400 mb-1 block">{isZh ? '之前' : 'Before'}</span>
+                    <p className="text-sm text-zinc-500 dark:text-zinc-400 font-mono">{input}</p>
+                  </div>
+                  <div className="rounded-xl bg-cyan-50 dark:bg-cyan-950/20 p-3 ring-1 ring-cyan-200 dark:ring-cyan-800">
+                    <span className="text-xs text-cyan-600 dark:text-cyan-400 mb-1 block">{isZh ? '增强后' : 'Enhanced'}</span>
+                    <p className="text-sm text-zinc-800 dark:text-zinc-200 font-mono leading-relaxed">{output}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl p-12 text-center">
+              <Wand2 className="mx-auto h-10 w-10 text-zinc-300 dark:text-zinc-600" />
+              <p className="mt-4 text-sm text-zinc-400 dark:text-zinc-500">
+                {isZh ? '粘贴提示词并点击增强，获得更专业的 AI 图像描述' : 'Paste your prompt and click enhance for a more professional AI image description'}
+              </p>
+            </div>
+          )}
+
+          {/* History */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowHistory(!showHistory)}
+              className="inline-flex items-center gap-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl px-4 py-2 text-sm text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-50 transition-colors"
+            >
+              <History className="h-4 w-4" />
+              {isZh ? '历史记录' : 'History'} ({history.length})
+            </button>
+            {history.length > 0 && (
+              <button
+                onClick={clearHistory}
+                className="inline-flex items-center gap-1 rounded-xl px-3 py-2 text-xs text-zinc-400 hover:text-red-500 transition-colors"
+              >
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
+
+          {showHistory && (
+            <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl p-4 shadow-sm space-y-2 max-h-64 overflow-y-auto">
+              {history.length === 0 ? (
+                <p className="text-sm text-zinc-400 text-center py-4">
+                  {isZh ? '暂无历史记录' : 'No history yet'}
+                </p>
+              ) : (
+                history.map((item) => (
+                  <button
+                    key={item.id}
+                    onClick={() => loadFromHistory(item)}
+                    className="w-full text-left rounded-xl bg-zinc-50 dark:bg-zinc-800/50 p-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  >
+                    <p className="text-xs font-mono text-zinc-700 dark:text-zinc-300 line-clamp-2">
+                      {item.enhanced}
+                    </p>
+                    <div className="flex items-center gap-2 mt-1.5">
+                      <span className="text-xs text-zinc-400 line-clamp-1">{item.original.slice(0, 40)}</span>
+                      <span className="text-xs text-zinc-300">·</span>
+                      <span className="text-xs text-zinc-400">{new Date(item.timestamp).toLocaleDateString()}</span>
+                    </div>
+                  </button>
+                ))
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}

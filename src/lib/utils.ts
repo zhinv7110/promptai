@@ -1,0 +1,28 @@
+export function cn(...classes: (string | boolean | undefined | null)[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
+export function baseUrl(locale: string) {
+  return `/${locale}`;
+}
+
+export function localize<T extends Record<string, string>>(
+  obj: T,
+  locale: string,
+  key: keyof T
+): string {
+  const locKey = `${String(key)}_${locale}` as keyof T;
+  return (obj[locKey] as string) ?? (obj[key] as string) ?? '';
+}
+
+export function getLocalizedField<T extends Record<string, unknown>>(
+  item: T,
+  field: string,
+  locale: string
+): string {
+  const localizedKey = `${field}_${locale}`;
+  if (typeof item[localizedKey] === 'string') {
+    return item[localizedKey] as string;
+  }
+  return (item[field as keyof T] as string) ?? '';
+}

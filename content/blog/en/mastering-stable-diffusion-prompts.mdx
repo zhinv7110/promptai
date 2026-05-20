@@ -1,0 +1,55 @@
+---
+title: "Mastering Stable Diffusion Prompts: Advanced Techniques"
+date: "2026-05-05"
+tags: ["stable-diffusion", "advanced", "technique"]
+excerpt: "Take your Stable Diffusion prompts to the next level with advanced prompting techniques, weighting, and style mixing."
+---
+
+## Beyond Basic Prompts
+
+Stable Diffusion gives you incredible control over image generation. Once you've mastered the basics, these advanced techniques will help you create exactly what you envision.
+
+## Prompt Weighting
+
+Use parentheses to emphasize words and square brackets to de-emphasize:
+
+```
+(beautiful detailed eyes:1.3), (intricate armor:1.2), [simple background:0.5]
+```
+
+Higher weights (>1.0) increase importance, lower weights (<1.0) reduce it.
+
+## Style Mixing
+
+Combine styles with weights for unique results:
+
+```
+[anime:digital painting:0.3], cyberpunk city at night, neon reflections, 8K
+```
+
+## The Power of Negative Prompts
+
+A strong negative prompt is crucial. Here's a template:
+
+```
+ugly, deformed, blurry, low quality, watermark, text, bad anatomy, extra limbs, poorly drawn face, disfigured, jpeg artifacts
+```
+
+## Token Efficiency
+
+SD has a soft token limit of ~75 tokens. Every word counts. Prioritize:
+
+1. Subject description
+2. Style and medium
+3. Lighting and mood
+4. Technical quality
+5. Composition
+
+## Advanced Keywords
+
+- **Photography**: `35mm`, `aperture f/1.4`, `bokeh`, `macro lens`
+- **Art**: `trending on artstation`, `concept art`, `matte painting`
+- **Lighting**: `god rays`, `rim lighting`, `volumetric fog`, `ambient occlusion`
+- **Material**: `subsurface scattering`, `metallic sheen`, `rough texture`
+
+Experiment with these in our [Prompt Enhancer](/prompt-enhancer) to see the difference they make.

@@ -1,0 +1,14 @@
+[
+  {
+    "title_en": "Example Prompt Title",
+    "title_zh": "示例提示词标题",
+    "slug": "example-prompt-slug",
+    "category": "portrait",
+    "prompt_text": "A detailed prompt description for AI image generation...",
+    "description_en": "Short description in English",
+    "description_zh": "中文简短描述",
+    "tags": ["portrait", "cinematic"],
+    "model": "midjourney",
+    "is_premium": false
+  }
+]

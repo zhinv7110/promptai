@@ -1,0 +1,23 @@
+'use client';
+
+import { useTranslations, useLocale } from 'next-intl';
+
+export default function AboutPage() {
+  const t = useTranslations();
+  const locale = useLocale();
+
+  return (
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
+      <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
+        {locale === 'zh' ? '关于 PromptAI' : 'About PromptAI'}
+      </h1>
+      <div className="mt-8 prose dark:prose-invert max-w-none">
+        <p className="text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          {locale === 'zh'
+            ? 'PromptAI 是一个免费的 AI 图像提示词平台，致力于帮助创作者生成更好的 AI 艺术作品。我们提供多种免费工具和精选提示词库，适用于 Midjourney、Stable Diffusion、DALL-E 等主流 AI 图像生成工具。'
+            : 'PromptAI is a free AI image prompt platform dedicated to helping creators generate better AI art. We provide multiple free tools and a curated prompt library for popular AI image generators including Midjourney, Stable Diffusion, and DALL-E.'}
+        </p>
+      </div>
+    </div>
+  );
+}

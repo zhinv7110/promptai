@@ -1,0 +1,93 @@
+{
+  "meta": {
+    "title": "PromptAI - AI 图像提示词工具与资源库",
+    "description": "生成、增强和发现 AI 图像提示词。适用于 Midjourney、Stable Diffusion、DALL-E 的免费工具。双语提示词库，包含数千个精选提示词。"
+  },
+  "nav": {
+    "home": "首页",
+    "tools": "工具",
+    "promptLibrary": "提示词库",
+    "blog": "博客",
+    "about": "关于",
+    "pricing": "定价"
+  },
+  "home": {
+    "hero": {
+      "title": "AI 图像提示词工具",
+      "subtitle": "使用我们的免费提示词工具创建令人惊叹的 AI 艺术作品。为 Midjourney、Stable Diffusion 和 DALL-E 生成、增强和发现完美提示词。",
+      "cta": {
+        "primary": "试用提示词生成器",
+        "secondary": "浏览提示词库"
+      },
+      "search": "搜索提示词、工具和指南..."
+    },
+    "popularTools": {
+      "title": "热门工具",
+      "subtitle": "创建完美提示词所需的一切"
+    },
+    "categories": {
+      "title": "按分类浏览",
+      "subtitle": "为每种风格和用途找到提示词"
+    },
+    "latestArticles": {
+      "title": "最新文章",
+      "subtitle": "AI 艺术技巧、教程和洞察"
+    },
+    "popularPrompts": {
+      "title": "热门提示词",
+      "subtitle": "社区正在使用的流行提示词"
+    }
+  },
+  "tools": {
+    "promptGenerator": {
+      "name": "提示词生成器",
+      "description": "从简单关键词生成 AI 图像提示词",
+      "input": "描述你想创建的内容...",
+      "generate": "生成提示词",
+      "copy": "复制提示词"
+    },
+    "promptEnhancer": {
+      "name": "提示词增强器",
+      "description": "改进和优化现有提示词",
+      "input": "粘贴要增强的提示词...",
+      "enhance": "增强提示词",
+      "copy": "复制结果"
+    },
+    "styleGenerator": {
+      "name": "风格生成器",
+      "description": "生成特定艺术风格的提示词",
+      "input": "描述你的主题...",
+      "generate": "生成风格提示词",
+      "copy": "复制提示词"
+    },
+    "imageAnalyzer": {
+      "name": "图像分析器",
+      "description": "分析图像并生成提示词建议",
+      "upload": "上传图片",
+      "analyze": "分析"
+    },
+    "negativePrompt": {
+      "name": "负面提示词生成器",
+      "description": "生成负面提示词以获得更清晰的结果",
+      "generate": "生成负面提示词",
+      "copy": "复制负面提示词"
+    }
+  },
+  "common": {
+    "viewAll": "查看全部",
+    "readMore": "阅读更多",
+    "copySuccess": "已复制！",
+    "loading": "加载中...",
+    "error": "出了点问题",
+    "noResults": "未找到结果"
+  },
+  "footer": {
+    "about": "PromptAI 是一个免费的 AI 图像提示词创作和发现平台。为艺术家、设计师和创作者打造。",
+    "tools": "工具",
+    "resources": "资源",
+    "company": "公司",
+    "legal": "法律",
+    "privacy": "隐私政策",
+    "terms": "服务条款"
+  }
+}
