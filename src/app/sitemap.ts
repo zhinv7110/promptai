@@ -2,7 +2,7 @@ export const dynamic = 'force-static';
 import { MetadataRoute } from 'next';
 import { routing } from '@/i18n/routing';
 import { getBlogPosts } from '@/lib/blog';
-import { samplePrompts } from '@/lib/sample-prompts';
+import { getPrompts } from '@/lib/data';
 
 const BASE_URL = 'https://thaumary.ai';
 
@@ -20,7 +20,7 @@ const staticRoutes = [
   { path: '/pricing', priority: 0.5, changeFreq: 'monthly' as const },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
   const now = new Date();
 
@@ -37,8 +37,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }
 
   // Dynamic: prompt detail pages
+  const prompts = await getPrompts();
   for (const locale of routing.locales) {
-    for (const prompt of samplePrompts) {
+    for (const prompt of prompts) {
       entries.push({
         url: `${BASE_URL}/${locale}/prompt-library/${prompt.slug}`,
         lastModified: new Date(prompt.updated_at || prompt.created_at),
