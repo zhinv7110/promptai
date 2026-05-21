@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { websiteSchema } from '@/lib/metadata';
+import { Analytics } from '@vercel/analytics/react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -66,6 +67,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
         {children}
+        <Analytics />
       </body>
     </html>
   );
