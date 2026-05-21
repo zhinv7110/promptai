@@ -19,17 +19,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const url = canonicalUrl(locale, `/blog/${slug}`);
 
   return {
-    title: `${title} | PromptAI Blog`,
+    title: `${title} | Thaumary Blog`,
     description,
     alternates: { canonical: url, languages: alternateUrls(`/blog/${slug}`) },
     openGraph: {
       title,
       description,
       url,
-      siteName: 'PromptAI',
+      siteName: 'Thaumary',
       type: 'article',
       publishedTime: post.date,
-      images: [{ url: 'https://promptai.tools/og-image.png', width: 1200, height: 630 }],
+      images: [{ url: 'https://thaumary.ai/og-image.png', width: 1200, height: 630 }],
       locale: locale === 'zh' ? 'zh_CN' : 'en_US',
     },
     twitter: { card: 'summary_large_image', title, description },

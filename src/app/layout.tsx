@@ -15,31 +15,31 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-const BASE_URL = 'https://promptai.tools';
+const BASE_URL = 'https://thaumary.ai';
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'PromptAI - AI Image Prompt Tools & Library',
-    template: '%s | PromptAI',
+    default: 'Thaumary AI - AI Image Prompt Tools & Library',
+    template: '%s | Thaumary AI',
   },
   description: 'Free AI image prompt tools and library for Midjourney, Stable Diffusion, and DALL-E.',
   keywords: ['AI prompts', 'image generation', 'Midjourney', 'Stable Diffusion', 'DALL-E', 'prompt generator', 'AI art'],
-  authors: [{ name: 'PromptAI' }],
-  creator: 'PromptAI',
-  publisher: 'PromptAI',
+  authors: [{ name: 'Thaumary AI' }],
+  creator: 'Thaumary AI',
+  publisher: 'Thaumary AI',
   robots: { index: true, follow: true },
   openGraph: {
     type: 'website',
-    siteName: 'PromptAI',
-    title: 'PromptAI - AI Image Prompt Tools & Library',
+    siteName: 'Thaumary AI',
+    title: 'Thaumary AI - AI Image Prompt Tools & Library',
     description: 'Free AI image prompt tools and library for Midjourney, Stable Diffusion, and DALL-E.',
     url: BASE_URL,
     images: [{ url: `${BASE_URL}/og-image.png`, width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'PromptAI - AI Image Prompt Tools & Library',
+    title: 'Thaumary AI - AI Image Prompt Tools & Library',
     description: 'Free AI image prompt tools and library.',
     images: [`${BASE_URL}/og-image.png`],
   },

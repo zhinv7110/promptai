@@ -1,7 +1,7 @@
 // Shared SEO metadata utilities
 
-const SITE_NAME = 'PromptAI';
-const BASE_URL = 'https://promptai.tools';
+const SITE_NAME = 'Thaumary AI';
+const BASE_URL = 'https://thaumary.ai';
 const DEFAULT_IMAGE = `${BASE_URL}/og-image.png`;
 
 export function siteUrl(path: string = ''): string {
@@ -94,7 +94,7 @@ export function articleSchema(params: {
     description: params.description,
     url: params.url,
     datePublished: params.datePublished,
-    author: { '@type': 'Person', name: params.authorName || 'PromptAI' },
+    author: { '@type': 'Person', name: params.authorName || 'Thaumary AI' },
     image: params.image || DEFAULT_IMAGE,
   };
 }

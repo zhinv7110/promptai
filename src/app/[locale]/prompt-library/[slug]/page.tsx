@@ -20,15 +20,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const url = canonicalUrl(locale, `/prompt-library/${slug}`);
 
   return {
-    title: `${title} | PromptAI`,
+    title: `${title} | Thaumary`,
     description,
     alternates: { canonical: url, languages: alternateUrls(`/prompt-library/${slug}`) },
     openGraph: {
       title: `${title} - AI Prompt`,
       description,
       url,
-      siteName: 'PromptAI',
-      images: prompt.example_image_url ? [{ url: prompt.example_image_url }] : [{ url: 'https://promptai.tools/og-image.png', width: 1200, height: 630 }],
+      siteName: 'Thaumary',
+      images: prompt.example_image_url ? [{ url: prompt.example_image_url }] : [{ url: 'https://thaumary.ai/og-image.png', width: 1200, height: 630 }],
       locale: locale === 'zh' ? 'zh_CN' : 'en_US',
       type: 'article',
     },

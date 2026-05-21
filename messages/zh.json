@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "PromptAI - AI 图像提示词工具与资源库",
+    "title": "Thaumary AI - AI 图像提示词工具与资源库",
     "description": "生成、增强和发现 AI 图像提示词。适用于 Midjourney、Stable Diffusion、DALL-E 的免费工具。双语提示词库，包含数千个精选提示词。"
   },
   "nav": {
@@ -82,7 +82,7 @@
     "noResults": "未找到结果"
   },
   "footer": {
-    "about": "PromptAI 是一个免费的 AI 图像提示词创作和发现平台。为艺术家、设计师和创作者打造。",
+    "about": "Thaumary AI 是一个免费的 AI 图像提示词创作和发现平台。为艺术家、设计师和创作者打造。",
     "tools": "工具",
     "resources": "资源",
     "company": "公司",

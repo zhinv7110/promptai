@@ -24,19 +24,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       languages: alternateUrls(),
     },
     openGraph: {
-      title: `PromptAI - ${title}`,
+      title: `Thaumary - ${title}`,
       description,
       url: canonicalUrl(locale),
-      siteName: 'PromptAI',
-      images: [{ url: 'https://promptai.tools/og-image.png', width: 1200, height: 630 }],
+      siteName: 'Thaumary',
+      images: [{ url: 'https://thaumary.ai/og-image.png', width: 1200, height: 630 }],
       locale: locale === 'zh' ? 'zh_CN' : 'en_US',
       type: 'website',
     },
     twitter: {
       card: 'summary_large_image',
-      title: `PromptAI - ${title}`,
+      title: `Thaumary - ${title}`,
       description,
-      images: ['https://promptai.tools/og-image.png'],
+      images: ['https://thaumary.ai/og-image.png'],
     },
   };
 }

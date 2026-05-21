@@ -45,9 +45,9 @@
   @apply active:scale-[0.97] transition-transform duration-100;
 }
 
-/* Gradient text */
+/* Gradient text — Thaumary brand */
 .gradient-text {
-  @apply bg-gradient-to-r from-indigo-600 via-purple-600 to-cyan-600 dark:from-indigo-400 dark:via-purple-400 dark:to-cyan-400 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r from-[#8B5CF6] via-[#6366F1] to-[#38BDF8] bg-clip-text text-transparent;
 }
 
 /* Section divider */

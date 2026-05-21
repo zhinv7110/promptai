@@ -18,7 +18,7 @@ export default function AdminDashboard() {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">{isZh ? '管理后台' : 'Admin Dashboard'}</h1>
-        <p className="text-zinc-500 mt-1">{isZh ? '管理你的 PromptAI 内容' : 'Manage your PromptAI content'}</p>
+        <p className="text-zinc-500 mt-1">{isZh ? '管理你的 Thaumary 内容' : 'Manage your Thaumary content'}</p>
       </div>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {cards.map((card) => (

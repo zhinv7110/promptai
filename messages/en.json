@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "PromptAI - AI Image Prompt Tools & Library",
+    "title": "Thaumary AI - AI Image Prompt Tools & Library",
     "description": "Generate, enhance, and discover AI image prompts. Free tools for Midjourney, Stable Diffusion, DALL-E. Bilingual prompt library with thousands of curated prompts."
   },
   "nav": {
@@ -82,7 +82,7 @@
     "noResults": "No results found"
   },
   "footer": {
-    "about": "PromptAI is a free platform for AI image prompt creation and discovery. Built for artists, designers, and creators.",
+    "about": "Thaumary AI is a free platform for AI image prompt creation and discovery. Built for artists, designers, and creators.",
     "tools": "Tools",
     "resources": "Resources",
     "company": "Company",

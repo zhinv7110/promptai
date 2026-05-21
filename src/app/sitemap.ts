@@ -4,7 +4,7 @@ import { routing } from '@/i18n/routing';
 import { getBlogPosts } from '@/lib/blog';
 import { samplePrompts } from '@/lib/sample-prompts';
 
-const BASE_URL = 'https://promptai.tools';
+const BASE_URL = 'https://thaumary.ai';
 
 const staticRoutes = [
   { path: '', priority: 1, changeFreq: 'daily' as const },

@@ -59,7 +59,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link href={`/${locale}`} className="inline-flex items-center gap-2 text-2xl font-bold">
             <Sparkles className="h-7 w-7 text-indigo-500" />
-            <span className="gradient-text">PromptAI</span>
+            <span className="gradient-text">Thaumary</span>
           </Link>
           <h1 className="mt-4 text-2xl font-bold text-zinc-900 dark:text-zinc-50">
             {isZh ? '登录' : 'Sign in'}

@@ -8,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/admin/',
     },
-    sitemap: 'https://promptai.tools/sitemap.xml',
+    sitemap: 'https://thaumary.ai/sitemap.xml',
   };
 }

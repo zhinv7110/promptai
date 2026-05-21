@@ -7,6 +7,7 @@ import { useTheme } from 'next-themes';
 import Navigation from './Navigation';
 import LanguageSwitcher from './LanguageSwitcher';
 import MobileMenu from './MobileMenu';
+import { LogoFull } from '@/components/brand/Logo';
 
 export default function Header({ locale }: { locale: string }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -21,13 +22,8 @@ export default function Header({ locale }: { locale: string }) {
     <header className="sticky top-0 z-50 w-full border-b border-zinc-200/50 dark:border-zinc-800/50 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-8">
-          <Link
-            href={`/${locale}`}
-            className="flex items-center gap-2 text-xl font-bold shrink-0"
-          >
-            <span className="bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent">
-              PromptAI
-            </span>
+          <Link href={`/${locale}`} className="shrink-0">
+            <LogoFull />
           </Link>
           <div className="hidden md:block">
             <Navigation locale={locale} />

@@ -37,7 +37,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <form onSubmit={login} className="w-full max-w-sm rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-8 shadow-sm">
           <div className="text-center mb-6">
             <Sparkles className="mx-auto h-10 w-10 text-indigo-500" />
-            <h1 className="mt-3 text-xl font-bold">PromptAI Admin</h1>
+            <h1 className="mt-3 text-xl font-bold">Thaumary Admin</h1>
           </div>
           <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder={locale === 'zh' ? '管理密码' : 'Password'} className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 mb-3" autoFocus />
           {err && <p className="text-sm text-red-500 mb-3">{err}</p>}

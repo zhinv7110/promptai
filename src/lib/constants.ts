@@ -1,5 +1,5 @@
-export const SITE_NAME = 'PromptAI';
-export const SITE_URL = 'https://promptai.tools';
+export const SITE_NAME = 'Thaumary AI';
+export const SITE_URL = 'https://thaumary.ai';
 export const DEFAULT_LOCALE = 'en';
 
 export const TOOLS = [
