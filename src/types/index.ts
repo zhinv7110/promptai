@@ -10,8 +10,8 @@ export interface Prompt {
   slug: string;
   description_en: string | null;
   description_zh: string | null;
-  description_ja: string | null;
-  description_ko: string | null;
+  description_ja?: string | null;
+  description_ko?: string | null;
   category: string;
   tags: string[];
   prompt_text: string;

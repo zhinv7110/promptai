@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { routing } from '@/i18n/routing';
+import type { Locale } from '@/i18n/routing';
 
 const locales = routing.locales;
 const defaultLocale = routing.defaultLocale;
@@ -8,13 +9,13 @@ const cookieName = 'NEXT_LOCALE';
 function getLocale(request: NextRequest): string {
   // 1. Cookie
   const cookie = request.cookies.get(cookieName)?.value;
-  if (cookie && locales.includes(cookie)) return cookie;
+  if (cookie && locales.includes(cookie as Locale)) return cookie;
 
   // 2. Accept-Language header
   const acceptLang = request.headers.get('accept-language') || '';
   for (const preferred of acceptLang.split(',')) {
     const lang = preferred.split(';')[0].trim().slice(0, 2);
-    if (locales.includes(lang)) return lang;
+    if (locales.includes(lang as Locale)) return lang;
   }
 
   // 3. Default
