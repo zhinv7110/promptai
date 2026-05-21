@@ -27,7 +27,7 @@ export default function PromptCategories() {
   const isZh = locale === 'zh';
 
   return (
-    <section className="py-20 bg-zinc-50 dark:bg-zinc-900/50">
+    <section className="section-divider py-20 bg-zinc-50 dark:bg-zinc-900/50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">

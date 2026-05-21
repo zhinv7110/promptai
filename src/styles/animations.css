@@ -54,3 +54,242 @@
 .section-gradient {
   background: linear-gradient(180deg, var(--tw-gradient-from, transparent), var(--tw-gradient-to, transparent));
 }
+
+/* ════════════════════════════════════════════════════════════ */
+/* Cinematic Hero Animations — Thaumary AI                    */
+/* ════════════════════════════════════════════════════════════ */
+
+/* ── Aurora / Nebula floating blobs ─────────────────────────── */
+
+@keyframes aurora-float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%      { transform: translate(60px, -40px) scale(1.05); }
+  50%      { transform: translate(30px, 20px) scale(0.95); }
+  75%      { transform: translate(-20px, -30px) scale(1.02); }
+}
+
+@keyframes aurora-float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%      { transform: translate(-50px, 30px) scale(1.06); }
+  66%      { transform: translate(40px, -20px) scale(0.94); }
+}
+
+@keyframes aurora-float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20%      { transform: translate(-80px, -60px) scale(1.03); }
+  40%      { transform: translate(-30px, 40px) scale(0.97); }
+  60%      { transform: translate(50px, -10px) scale(1.04); }
+  80%      { transform: translate(20px, 50px) scale(0.96); }
+}
+
+/* ── Bloom breathe ──────────────────────────────────────────── */
+
+@keyframes bloom-breathe {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 0.6;  transform: scale(1.08); }
+}
+
+/* ── Gradient background shift ──────────────────────────────── */
+
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ── Subtle particle float ──────────────────────────────────── */
+
+@keyframes particle-float {
+  0%   { opacity: 0; transform: translateY(0) translateX(0); }
+  10%  { opacity: 0.5; }
+  90%  { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(-120px) translateX(20px); }
+}
+
+/* ── Border glow pulse ──────────────────────────────────────── */
+
+@keyframes border-glow-pulse {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.8; }
+}
+
+/* ── Utility classes ────────────────────────────────────────── */
+
+.aurora-blob {
+  @apply absolute rounded-full;
+  will-change: transform, opacity;
+}
+
+.aurora-bloom {
+  @apply absolute rounded-full;
+  will-change: transform, opacity;
+}
+
+.particle {
+  @apply absolute w-[2px] h-[2px] rounded-full;
+  background: rgba(255, 255, 255, 0.25);
+  will-change: transform, opacity;
+  pointer-events: none;
+}
+
+/* Hero title — gradient text with animated shift + glow */
+
+.hero-title {
+  @apply bg-gradient-to-r from-purple-400 via-indigo-400 to-cyan-400 bg-clip-text text-transparent;
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease-in-out infinite;
+  position: relative;
+  display: inline-block;
+}
+
+/* Title glow — light bloom behind H1 text */
+
+.hero-title-glow {
+  position: absolute;
+  inset: -40px -60px;
+  background: radial-gradient(ellipse at center, rgba(139, 92, 246, 0.15), transparent 60%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ── Button system ──────────────────────────────────────────── */
+
+.btn-premium {
+  @apply relative inline-flex items-center gap-2 rounded-xl px-8 py-4 text-sm font-semibold text-white overflow-hidden;
+  background: linear-gradient(135deg, #8B5CF6, #6366F1, #38BDF8);
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease-in-out infinite;
+  box-shadow: 0 4px 24px rgba(99, 102, 241, 0.3);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.btn-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #8B5CF6, #6366F1, #38BDF8);
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease-in-out infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: inherit;
+}
+
+.btn-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 40px rgba(99, 102, 241, 0.45);
+}
+
+.btn-premium:active {
+  transform: translateY(0);
+}
+
+/* ── Glass button ───────────────────────────────────────────── */
+
+.btn-glass {
+  @apply inline-flex items-center gap-2 rounded-xl px-8 py-4 text-sm font-semibold;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: rgba(255, 255, 255, 0.75);
+  transition: all 0.3s ease;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.20);
+  color: rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+
+/* ── Glass search bar ───────────────────────────────────────── */
+
+.search-glass {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.4s ease;
+}
+
+.search-glass:focus-within {
+  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.2), 0 0 30px rgba(139, 92, 246, 0.08);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.search-glass input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.search-glass input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.search-glass input:-webkit-autofill,
+.search-glass input:-webkit-autofill:hover,
+.search-glass input:-webkit-autofill:focus {
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.9);
+  -webkit-box-shadow: 0 0 0 30px rgba(10, 10, 26, 1) inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* ── Section blends ─────────────────────────────────────────── */
+
+.section-divider {
+  @apply relative;
+}
+
+.section-divider::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.15), rgba(56, 189, 248, 0.15), transparent);
+}
+
+.section-atmosphere {
+  @apply relative overflow-hidden;
+}
+
+.section-atmosphere::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -25%;
+  width: 150%;
+  height: 200%;
+  background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.03), transparent 60%);
+  pointer-events: none;
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora-blob,
+  .aurora-bloom,
+  .particle,
+  .hero-title,
+  .btn-premium,
+  .search-glass {
+    animation: none !important;
+  }
+  .btn-premium:hover {
+    transform: none;
+  }
+  .btn-glass:hover {
+    transform: none;
+  }
+}

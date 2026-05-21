@@ -13,13 +13,17 @@
   },
   "home": {
     "hero": {
-      "title": "AI Image Prompt Tools",
-      "subtitle": "Create stunning AI art with our free prompt tools. Generate, enhance, and discover the perfect prompts for Midjourney, Stable Diffusion, and DALL-E.",
+      "title": "Speak the word. Awaken the vision.",
+      "subtitle": "At Thaumary, every carefully chosen phrase is a spell that unlocks the infinite canvas of silicon intelligence.",
+      "badge": "Free AI Prompt Tools Platform",
       "cta": {
         "primary": "Try Prompt Generator",
         "secondary": "Browse Library"
       },
-      "search": "Search prompts, tools, and guides..."
+      "search": "Search prompts, tools, and guides...",
+      "tools": "AI Tools",
+      "curated": "Curated Prompts",
+      "tutorials": "Tutorials"
     },
     "popularTools": {
       "title": "Popular Tools",
