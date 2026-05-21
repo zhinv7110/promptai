@@ -40,16 +40,13 @@ export default function Hero({ locale }: { locale: string }) {
             {t('badge')}
           </div>
 
-          {/* Heading with glow */}
-          <div className="relative">
-            <div className="hero-title-glow" aria-hidden="true" />
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-extrabold leading-[1.05] tracking-tight">
-              <span className="hero-title">{t('title')}</span>
-            </h1>
-          </div>
+          {/* Heading */}
+          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            <span className="gradient-text">{t('title')}</span>
+          </h1>
 
           {/* Subtitle */}
-          <p className="mt-8 mx-auto max-w-2xl text-lg sm:text-xl leading-relaxed text-zinc-300/80">
+          <p className="mt-6 mx-auto max-w-2xl text-lg sm:text-xl leading-relaxed text-zinc-300/80">
             {t('subtitle')}
           </p>
 
