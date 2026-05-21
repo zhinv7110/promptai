@@ -15,6 +15,12 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
 
+  async redirects() {
+    return [
+      { source: '/', destination: '/en', permanent: false },
+    ];
+  },
+
 };
 
 export default withNextIntl(nextConfig);
