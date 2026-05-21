@@ -27,13 +27,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-// Extract keywords from prompt for visual highlighting
-function highlightKeywords(text: string): { segments: { text: string; highlight: boolean }[] } {
-  const keywords = /\b(8K|4K|HD|cinematic|photorealistic|hyperrealistic|masterpiece|professional|detailed|sharp|breathtaking|award.winning|editorial|photography|lighting|portrait|landscape|concept art|macro|style|render|composition|octane|unreal engine|artstation|midjourney|ghibli|anime|DALL.E|stable.diffusion)\b/gi;
-  const parts = text.split(keywords);
-  return parts.map((text, i) => ({ text, highlight: keywords.test(text) }));
-}
-
 export default async function PromptDetailPage({ params }: Props) {
   const { slug, locale } = await params;
   const isZh = locale === 'zh';
