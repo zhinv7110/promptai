@@ -1,7 +1,7 @@
 import type { Locale } from '@/i18n/routing';
 
 export function localizedField(
-  item: Record<string, unknown>,
+  item: any,
   field: string,
   locale: string,
 ): string {

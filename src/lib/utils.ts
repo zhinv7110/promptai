@@ -16,7 +16,7 @@ export function localize<T extends Record<string, string>>(
 }
 
 export function getLocalizedField(
-  item: Record<string, unknown>,
+  item: any,
   field: string,
   locale: string
 ): string {
