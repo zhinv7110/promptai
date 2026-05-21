@@ -1,15 +1,15 @@
 import type { Locale } from '@/i18n/routing';
 
-export function localizedField<T extends Record<string, unknown>>(
-  item: T,
+export function localizedField(
+  item: Record<string, unknown>,
   field: string,
   locale: string,
 ): string {
-  const key = `${field}_${locale}` as keyof T;
+  const key = `${field}_${locale}`;
   if (typeof item[key] === 'string' && (item[key] as string).length > 0) {
     return item[key] as string;
   }
-  const enKey = `${field}_en` as keyof T;
+  const enKey = `${field}_en`;
   if (typeof item[enKey] === 'string') {
     return item[enKey] as string;
   }

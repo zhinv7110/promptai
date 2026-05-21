@@ -15,8 +15,8 @@ export function localize<T extends Record<string, string>>(
   return (obj[locKey] as string) ?? (obj[key] as string) ?? '';
 }
 
-export function getLocalizedField<T extends Record<string, unknown>>(
-  item: T,
+export function getLocalizedField(
+  item: Record<string, unknown>,
   field: string,
   locale: string
 ): string {
@@ -29,5 +29,5 @@ export function getLocalizedField<T extends Record<string, unknown>>(
   if (typeof item[enKey] === 'string') {
     return item[enKey] as string;
   }
-  return (item[field as keyof T] as string) ?? '';
+  return (item[field] as string) ?? '';
 }
