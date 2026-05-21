@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { OutputLanguageSelector, useOutputLang } from '@/components/ui/OutputLanguageSelector';
+import { generateZhExplanation } from '@/lib/language';
 import {
   Copy, Check, Palette, History, Trash2,
   Sparkles, Loader2, RefreshCw, Gauge,
@@ -122,6 +124,7 @@ export default function StyleGeneratorPage() {
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showHistory, setShowHistory] = useState(false);
   const [expandedCat, setExpandedCat] = useState<string>('artistic');
+  const [outputLang, setOutputLang] = useOutputLang(locale);
 
   useEffect(() => {
     const saved = localStorage.getItem('sg-history');
@@ -288,6 +291,19 @@ export default function StyleGeneratorPage() {
         <div className="lg:col-span-3 space-y-4">
           {output && selectedStyle ? (
             <>
+              <div className="mb-2 flex justify-end">
+                <OutputLanguageSelector value={outputLang} onChange={setOutputLang} locale={locale} />
+              </div>
+              {(outputLang === 'zh' || outputLang === 'bilingual') && (
+                <div className="mb-4 p-4 rounded-xl bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800">
+                  <h4 className="text-xs font-semibold text-purple-700 dark:text-purple-400 mb-2">
+                    {isZh ? '中文解释' : 'Chinese Explanation'}
+                  </h4>
+                  {generateZhExplanation(output).map((tip: string, i: number) => (
+                    <p key={i} className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">{tip}</p>
+                  ))}
+                </div>
+              )}
               {/* Style info */}
               <div className="flex items-center gap-3">
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-pink-100 dark:bg-pink-900/50 px-3 py-1 text-sm font-medium text-pink-700 dark:text-pink-300">

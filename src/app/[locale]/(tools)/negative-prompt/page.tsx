@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { OutputLanguageSelector, useOutputLang } from '@/components/ui/OutputLanguageSelector';
+import { generateZhExplanation } from '@/lib/language';
 import {
   Copy, Check, ShieldX, History, Trash2,
   SlidersHorizontal, Loader2, RefreshCw,
@@ -92,6 +94,7 @@ export default function NegativePromptPage() {
   const [copied, setCopied] = useState('');
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [outputLang, setOutputLang] = useOutputLang(locale);
 
   useEffect(() => {
     const saved = localStorage.getItem('np-history');
@@ -294,6 +297,9 @@ export default function NegativePromptPage() {
         <div className="space-y-4">
           {output ? (
             <>
+              <div className="mb-2 flex justify-end">
+                <OutputLanguageSelector value={outputLang} onChange={setOutputLang} locale={locale} />
+              </div>
               {/* Stats */}
               <div className="flex items-center gap-3">
                 <div className="flex-1 rounded-xl bg-emerald-50 dark:bg-emerald-950/20 px-3 py-1.5 text-xs text-emerald-600 dark:text-emerald-400">

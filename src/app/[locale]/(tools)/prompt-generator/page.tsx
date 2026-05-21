@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { OutputLanguageSelector, useOutputLang } from '@/components/ui/OutputLanguageSelector';
+import { generateZhExplanation } from '@/lib/language';
 import {
   Copy, Check, Sparkles, History, Trash2,
   ChevronDown, Zap, Gauge, Lightbulb, Camera, Palette,
@@ -89,6 +91,7 @@ export default function PromptGeneratorPage() {
   const [score, setScore] = useState(0);
   const [copied, setCopied] = useState('');
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [outputLang, setOutputLang] = useOutputLang(locale);
   const [showHistory, setShowHistory] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -315,6 +318,19 @@ export default function PromptGeneratorPage() {
         <div className="lg:col-span-2 space-y-4">
           {output ? (
             <>
+              <div className="mb-2 flex justify-end">
+                <OutputLanguageSelector value={outputLang} onChange={setOutputLang} locale={locale} />
+              </div>
+              {(outputLang === 'zh' || outputLang === 'bilingual') && (
+                <div className="mb-4 p-4 rounded-xl bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800">
+                  <h4 className="text-xs font-semibold text-purple-700 dark:text-purple-400 mb-2">
+                    {isZh ? '中文解释' : 'Chinese Explanation'}
+                  </h4>
+                  {generateZhExplanation(output).map((tip: string, i: number) => (
+                    <p key={i} className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">{tip}</p>
+                  ))}
+                </div>
+              )}
               {/* Main output */}
               <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-3">

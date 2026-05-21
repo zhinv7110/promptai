@@ -2,6 +2,8 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useParams } from 'next/navigation';
+import { OutputLanguageSelector, useOutputLang } from '@/components/ui/OutputLanguageSelector';
+import { generateZhExplanation, type OutputLang } from '@/lib/language';
 import {
   Copy, Check, Wand2, History, Trash2,
   ChevronDown, Sparkles, Loader2, Gauge, Lightbulb,
@@ -141,6 +143,7 @@ export default function PromptEnhancerPage() {
   const [copied, setCopied] = useState('');
   const [history, setHistory] = useState<HistoryItem[]>([]);
   const [showHistory, setShowHistory] = useState(false);
+  const [outputLang, setOutputLang] = useOutputLang(locale);
 
   // Options
   const [boostQuality, setBoostQuality] = useState(true);
@@ -319,8 +322,25 @@ export default function PromptEnhancerPage() {
                 </div>
               )}
 
+              {/* Language selector */}
+              <div className="mb-2 flex justify-end">
+                <OutputLanguageSelector value={outputLang} onChange={setOutputLang} locale={locale} />
+              </div>
+
               {/* Main output */}
               <div className="rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl p-6 shadow-sm">
+                {(outputLang === 'zh' || outputLang === 'bilingual') && (
+                  <div className="mb-4 p-4 rounded-xl bg-purple-50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800">
+                    <h4 className="text-xs font-semibold text-purple-700 dark:text-purple-400 mb-2">
+                      {isZh ? '中文解释' : 'Chinese Explanation'}
+                    </h4>
+                    <div className="space-y-1.5">
+                      {generateZhExplanation(output).map((tip, i) => (
+                        <p key={i} className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed">{tip}</p>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 <div className="flex items-center justify-between mb-3">
                   <span className="inline-flex items-center gap-1 rounded-full bg-green-100 dark:bg-green-900/50 px-2.5 py-0.5 text-xs font-medium text-green-700 dark:text-green-400">
                     <Gauge className="h-3 w-3" /> {score}/100
