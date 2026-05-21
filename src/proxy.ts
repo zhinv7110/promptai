@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { routing } from '@/i18n/routing';
 
-const locales = ['en', 'zh'];
-const defaultLocale = 'en';
+const locales = routing.locales;
+const defaultLocale = routing.defaultLocale;
 const cookieName = 'NEXT_LOCALE';
 
 function getLocale(request: NextRequest): string {

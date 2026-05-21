@@ -1,4 +1,5 @@
 import { getPrompts } from '@/lib/data';
+import { localizedField } from '@/lib/i18n-utils';
 import Link from 'next/link';
 import { Heart, Eye, Tag } from 'lucide-react';
 import type { Prompt } from '@/types';
@@ -24,7 +25,7 @@ export default async function TagPage({ params }: Props) {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {prompts.map((p: Prompt) => (
             <Link key={p.id} href={`/${locale}/prompt-library/${p.slug}`} className="group rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 hover:shadow-lg transition-all">
-              <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 line-clamp-1 group-hover:text-cyan-600 transition-colors">{locale === 'zh' ? p.title_zh : p.title_en}</h3>
+              <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 line-clamp-1 group-hover:text-cyan-600 transition-colors">{localizedField(p, 'title', locale)}</h3>
               <p className="mt-3 text-xs font-mono text-zinc-600 dark:text-zinc-400 line-clamp-2">{p.prompt_text}</p>
               <div className="mt-3 flex items-center gap-3 text-xs text-zinc-400">
                 <span className="inline-flex items-center gap-1"><Heart className="h-3 w-3" /> {p.likes_count}</span>

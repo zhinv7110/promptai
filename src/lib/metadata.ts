@@ -1,5 +1,9 @@
 // Shared SEO metadata utilities
 
+import { routing } from '@/i18n/routing';
+import { ogLocale as getOgLocale } from '@/lib/i18n-utils';
+import type { Locale } from '@/i18n/routing';
+
 const SITE_NAME = 'Thaumary AI';
 const BASE_URL = 'https://thaumary.ai';
 const DEFAULT_IMAGE = `${BASE_URL}/og-image.png`;
@@ -13,10 +17,11 @@ export function canonicalUrl(locale: string, path: string = ''): string {
 }
 
 export function alternateUrls(path: string = ''): Record<string, string> {
-  return {
-    en: `${BASE_URL}/en${path}`,
-    zh: `${BASE_URL}/zh${path}`,
-  };
+  const urls: Record<string, string> = {};
+  for (const loc of routing.locales) {
+    urls[loc] = `${BASE_URL}/${loc}${path}`;
+  }
+  return urls;
 }
 
 // Open Graph metadata builder
@@ -47,7 +52,7 @@ export function ogMetadata(params: {
       url,
       siteName: SITE_NAME,
       images: [{ url: image || DEFAULT_IMAGE, width: 1200, height: 630 }],
-      locale: locale === 'zh' ? 'zh_CN' : 'en_US',
+      locale: getOgLocale(locale as Locale),
       type,
     },
     twitter: {

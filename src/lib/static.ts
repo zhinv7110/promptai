@@ -1,4 +1,5 @@
-// Shared generateStaticParams for static export
+import { routing } from '@/i18n/routing';
+
 export function localeParams() {
-  return [{ locale: 'en' }, { locale: 'zh' }];
+  return routing.locales.map((locale) => ({ locale }));
 }

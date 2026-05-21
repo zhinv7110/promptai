@@ -22,7 +22,12 @@ export function getLocalizedField<T extends Record<string, unknown>>(
 ): string {
   const localizedKey = `${field}_${locale}`;
   if (typeof item[localizedKey] === 'string') {
-    return item[localizedKey] as string;
+    const val = item[localizedKey] as string;
+    if (val.length > 0) return val;
+  }
+  const enKey = `${field}_en`;
+  if (typeof item[enKey] === 'string') {
+    return item[enKey] as string;
   }
   return (item[field as keyof T] as string) ?? '';
 }

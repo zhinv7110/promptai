@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Heart, Eye, Sparkles, TrendingUp } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { getPrompts } from '@/lib/data';
+import { localizedField } from '@/lib/i18n-utils';
 import type { Prompt } from '@/types';
 
 export default async function PopularPrompts({ locale }: { locale: string }) {
@@ -27,8 +28,8 @@ export default async function PopularPrompts({ locale }: { locale: string }) {
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 stagger">
             {featured.map((prompt: Prompt) => {
-              const title = isZh ? prompt.title_zh : prompt.title_en;
-              const desc = isZh ? prompt.description_zh : prompt.description_en;
+              const title = localizedField(prompt, 'title', locale);
+              const desc = localizedField(prompt, 'description', locale);
               return (
                 <Link key={prompt.id} href={`/${locale}/prompt-library/${prompt.slug}`}
                   className="group glass rounded-2xl overflow-hidden glass-hover flex flex-col"
@@ -72,7 +73,7 @@ export default async function PopularPrompts({ locale }: { locale: string }) {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 stagger">
             {trending.map((prompt: Prompt) => {
-              const title = isZh ? prompt.title_zh : prompt.title_en;
+              const title = localizedField(prompt, 'title', locale);
               return (
                 <Link key={prompt.id} href={`/${locale}/prompt-library/${prompt.slug}`}
                   className="group glass rounded-2xl p-5 glass-hover"

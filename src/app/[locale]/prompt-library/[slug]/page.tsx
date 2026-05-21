@@ -1,4 +1,5 @@
 import { getPromptBySlug, getPrompts } from '@/lib/data';
+import { localizedField } from '@/lib/i18n-utils';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, ChevronRight, Sparkles, Heart, Eye, Tag, Info, Layers, Zap } from 'lucide-react';
@@ -14,8 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
   const prompt = await getPromptBySlug(slug);
   if (!prompt) return { title: 'Not Found' };
-  const title = locale === 'zh' ? prompt.title_zh : prompt.title_en;
-  const desc = locale === 'zh' ? (prompt.description_zh || prompt.title_zh) : (prompt.description_en || prompt.title_en);
+  const title = localizedField(prompt, 'title', locale);
+  const desc = localizedField(prompt, 'description', locale) || localizedField(prompt, 'title', locale);
   const url = canonicalUrl(locale, `/prompt-library/${slug}`);
   return {
     title: `${title} | Thaumary`,
@@ -34,8 +35,8 @@ export default async function PromptDetailPage({ params }: Props) {
   const prompt = await getPromptBySlug(slug);
   if (!prompt) notFound();
 
-  const title = isZh ? prompt.title_zh : prompt.title_en;
-  const description = isZh ? prompt.description_zh : prompt.description_en;
+  const title = localizedField(prompt, 'title', locale);
+  const description = localizedField(prompt, 'description', locale);
 
   const related = (await getPrompts({ category: prompt.category, limit: 4, orderBy: 'likes_count' }))
     .filter((p: Prompt) => p.id !== prompt.id).slice(0, 3);
@@ -144,8 +145,8 @@ export default async function PromptDetailPage({ params }: Props) {
             <div className="grid gap-4 sm:grid-cols-3">
               {related.map((rp: Prompt) => (
                 <Link key={rp.id} href={`/${locale}/prompt-library/${rp.slug}`} className="group glass rounded-xl p-4 glass-hover">
-                  <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-purple-600 transition-colors">{isZh ? rp.title_zh : rp.title_en}</h3>
-                  <p className="mt-1 text-xs text-zinc-500 line-clamp-2">{isZh ? rp.description_zh : rp.description_en}</p>
+                  <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-purple-600 transition-colors">{localizedField(rp, 'title', locale)}</h3>
+                  <p className="mt-1 text-xs text-zinc-500 line-clamp-2">{localizedField(rp, 'description', locale)}</p>
                   <div className="flex items-center gap-2 mt-2 text-xs text-zinc-400">
                     <span className="inline-flex items-center gap-1"><Heart className="h-3 w-3" /> {rp.likes_count}</span>
                     <span>{rp.model === 'stable-diffusion' ? 'SD' : rp.model === 'dalle3' ? 'DALL·E 3' : rp.model.charAt(0).toUpperCase() + rp.model.slice(1)}</span>

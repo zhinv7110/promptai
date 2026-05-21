@@ -2,10 +2,10 @@ import Link from 'next/link';
 import { ArrowUpRight, Calendar } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import { getBlogPosts } from '@/lib/data';
+import { localizedField } from '@/lib/i18n-utils';
 
 export default async function LatestArticles({ locale }: { locale: string }) {
   const t = await getTranslations();
-  const isZh = locale === 'zh';
   const posts = (await getBlogPosts(locale)).slice(0, 3);
 
   if (posts.length === 0) return null;
@@ -32,7 +32,7 @@ export default async function LatestArticles({ locale }: { locale: string }) {
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => {
-            const title = isZh ? post.title_zh : post.title_en;
+            const title = localizedField(post, 'title', locale);
             return (
               <Link
                 key={post.slug}

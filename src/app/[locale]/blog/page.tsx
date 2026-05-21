@@ -1,4 +1,5 @@
 import { getBlogPosts } from '@/lib/data';
+import { localizedField } from '@/lib/i18n-utils';
 import { use } from 'react';
 import { Calendar, Tag, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
@@ -30,8 +31,8 @@ export default async function BlogPage({ params }: Props) {
       ) : (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {posts.map((post) => {
-            const title = isZh ? post.title_zh : post.title_en;
-            const excerpt = isZh ? post.excerpt_zh : post.excerpt_en;
+            const title = localizedField(post, 'title', locale);
+            const excerpt = localizedField(post, 'excerpt', locale);
             return (
               <Link
                 key={post.slug}

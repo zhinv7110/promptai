@@ -1,4 +1,5 @@
 import { getPrompts, getBlogPosts } from '@/lib/data';
+import { localizedField } from '@/lib/i18n-utils';
 import Link from 'next/link';
 import { Search, Sparkles, Heart, Eye, Calendar } from 'lucide-react';
 import type { Prompt, BlogPost } from '@/types';
@@ -28,8 +29,8 @@ export default async function SearchPage({ params, searchParams }: Props) {
   const prompts = await getPrompts({ search: q, limit: 12 });
   const posts = await getBlogPosts(locale);
   const matchingPosts = posts.filter((p: BlogPost) => {
-    const title = isZh ? p.title_zh : p.title_en;
-    const excerpt = isZh ? p.excerpt_zh : p.excerpt_en;
+    const title = localizedField(p, 'title', locale);
+    const excerpt = localizedField(p, 'excerpt', locale);
     return title.toLowerCase().includes(q.toLowerCase()) || (excerpt && excerpt.toLowerCase().includes(q.toLowerCase()));
   }).slice(0, 6);
 
@@ -51,7 +52,7 @@ export default async function SearchPage({ params, searchParams }: Props) {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {prompts.map((p: Prompt) => (
               <Link key={p.id} href={`/${locale}/prompt-library/${p.slug}`} className="group rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 hover:shadow-lg transition-all">
-                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 line-clamp-1 group-hover:text-indigo-600 transition-colors">{isZh ? p.title_zh : p.title_en}</h3>
+                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 line-clamp-1 group-hover:text-indigo-600 transition-colors">{localizedField(p, 'title', locale)}</h3>
                 <p className="mt-2 text-xs font-mono text-zinc-600 dark:text-zinc-400 line-clamp-2">{p.prompt_text}</p>
                 <div className="mt-3 flex items-center gap-3 text-xs text-zinc-400">
                   <span className="inline-flex items-center gap-1"><Heart className="h-3 w-3" /> {p.likes_count}</span>
@@ -72,8 +73,8 @@ export default async function SearchPage({ params, searchParams }: Props) {
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {matchingPosts.map((p: BlogPost) => (
               <Link key={p.slug} href={`/${locale}/blog/${p.slug}`} className="group rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 hover:shadow-md transition-all">
-                <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-indigo-600 transition-colors">{isZh ? p.title_zh : p.title_en}</h3>
-                <p className="mt-1 text-xs text-zinc-500 line-clamp-2">{isZh ? p.excerpt_zh : p.excerpt_en}</p>
+                <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-1 group-hover:text-indigo-600 transition-colors">{localizedField(p, 'title', locale)}</h3>
+                <p className="mt-1 text-xs text-zinc-500 line-clamp-2">{localizedField(p, 'excerpt', locale)}</p>
               </Link>
             ))}
           </div>

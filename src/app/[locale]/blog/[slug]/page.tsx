@@ -1,4 +1,5 @@
 import { getBlogPost, getBlogPosts } from '@/lib/data';
+import { localizedField } from '@/lib/i18n-utils';
 import { Calendar, Tag, ArrowLeft, ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -13,8 +14,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params;
   const post = await getBlogPost(slug, locale);
   if (!post) return { title: 'Not Found' };
-  const title = locale === 'zh' ? post.title_zh : post.title_en;
-  const desc = locale === 'zh' ? (post.excerpt_zh || post.title_zh) : (post.excerpt_en || post.title_en);
+  const title = localizedField(post, 'title', locale);
+  const desc = localizedField(post, 'excerpt', locale) || localizedField(post, 'title', locale);
   const url = canonicalUrl(locale, `/blog/${slug}`);
   return {
     title: `${title} | Thaumary Blog`,
@@ -63,9 +64,9 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await getBlogPost(slug, locale);
   if (!post) notFound();
 
-  const title = isZh ? post.title_zh : post.title_en;
-  const excerpt = isZh ? post.excerpt_zh : post.excerpt_en;
-  const content = isZh ? (post.content_zh || post.content_en || '') : (post.content_en || post.content_zh || '');
+  const title = localizedField(post, 'title', locale);
+  const excerpt = localizedField(post, 'excerpt', locale);
+  const content = localizedField(post, 'content', locale);
   const toc = extractTOC(content);
   const faqSchema = generateFAQSchema(title, content, canonicalUrl(locale, `/blog/${slug}`));
   const breadcrumb = breadcrumbSchema([
@@ -129,8 +130,8 @@ export default async function BlogPostPage({ params }: Props) {
             <div className="grid gap-4 sm:grid-cols-3">
               {related.map((rp: BlogPost) => (
                 <Link key={rp.slug} href={`/${locale}/blog/${rp.slug}`} className="group glass rounded-xl p-4 glass-hover">
-                  <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-2 group-hover:text-purple-600 transition-colors">{isZh ? rp.title_zh : rp.title_en}</h3>
-                  <p className="mt-1 text-xs text-zinc-500 line-clamp-2">{isZh ? rp.excerpt_zh : rp.excerpt_en}</p>
+                  <h3 className="text-sm font-semibold text-zinc-800 dark:text-zinc-200 line-clamp-2 group-hover:text-purple-600 transition-colors">{localizedField(rp, 'title', locale)}</h3>
+                  <p className="mt-1 text-xs text-zinc-500 line-clamp-2">{localizedField(rp, 'excerpt', locale)}</p>
                   <div className="mt-2 text-xs text-zinc-400">{rp.date?.split('T')[0]}</div>
                 </Link>
               ))}

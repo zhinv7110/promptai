@@ -1,6 +1,7 @@
 import { getPrompts } from '@/lib/data';
 import { CATEGORIES } from '@/lib/constants';
 import type { Prompt } from '@/types';
+import { localizedField, localizedLabel } from '@/lib/i18n-utils';
 import { Search, Sparkles, Heart, Eye } from 'lucide-react';
 import Link from 'next/link';
 
@@ -80,7 +81,7 @@ export default async function PromptLibraryPage({ params, searchParams }: Props)
                 category === cat.slug ? 'bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300' : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-200'
               }`}
             >
-              {isZh ? catNames[cat.slug]?.zh : catNames[cat.slug]?.en}
+              {localizedLabel(catNames[cat.slug], locale)}
             </Link>
           ))}
         </div>
@@ -117,8 +118,8 @@ export default async function PromptLibraryPage({ params, searchParams }: Props)
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {prompts.map((prompt: Prompt) => {
-            const title = isZh ? prompt.title_zh : prompt.title_en;
-            const description = isZh ? prompt.description_zh : prompt.description_en;
+            const title = localizedField(prompt, 'title', locale);
+            const description = localizedField(prompt, 'description', locale);
             return (
               <Link
                 key={prompt.id}

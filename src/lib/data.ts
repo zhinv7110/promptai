@@ -90,7 +90,7 @@ export async function getPrompts(filters?: {
 
     if (filters?.search) {
       const q = `%${filters.search}%`;
-      query = query.or(`title_en.ilike.${q},title_zh.ilike.${q},prompt_text.ilike.${q}`);
+      query = query.or(`title_en.ilike.${q},title_zh.ilike.${q},title_ja.ilike.${q},title_ko.ilike.${q},prompt_text.ilike.${q}`);
     }
     if (filters?.category) {
       query = query.eq('category', filters.category);
@@ -159,20 +159,26 @@ export async function getBlogPosts(locale?: string): Promise<BlogPost[]> {
         slug: p.slug,
         title_en: p.title,
         title_zh: p.title,
+        title_ja: p.title,
+        title_ko: p.title,
         excerpt_en: p.excerpt,
         excerpt_zh: p.excerpt,
+        excerpt_ja: p.excerpt,
+        excerpt_ko: p.excerpt,
         date: p.date,
         tags: p.tags,
         featured_image: null as string | null,
         content_en: '',
         content_zh: '',
+        content_ja: '',
+        content_ko: '',
       })) as BlogPost[];
     }
 
     const supabase = await createServerSupabase();
     const { data, error } = await supabase
       .from('blog_posts')
-      .select('slug, title_en, title_zh, excerpt_en, excerpt_zh, tags, created_at, featured_image')
+      .select('slug, title_en, title_zh, title_ja, title_ko, excerpt_en, excerpt_zh, excerpt_ja, excerpt_ko, tags, created_at, featured_image')
       .eq('published', true)
       .order('created_at', { ascending: false });
 
@@ -183,13 +189,19 @@ export async function getBlogPosts(locale?: string): Promise<BlogPost[]> {
         slug: p.slug,
         title_en: p.title,
         title_zh: p.title,
+        title_ja: p.title,
+        title_ko: p.title,
         excerpt_en: p.excerpt,
         excerpt_zh: p.excerpt,
+        excerpt_ja: p.excerpt,
+        excerpt_ko: p.excerpt,
         date: p.date,
         tags: p.tags,
         featured_image: null as string | null,
         content_en: '',
         content_zh: '',
+        content_ja: '',
+        content_ko: '',
       })) as BlogPost[];
     }
 
@@ -197,13 +209,19 @@ export async function getBlogPosts(locale?: string): Promise<BlogPost[]> {
       slug: row.slug as string,
       title_en: row.title_en as string,
       title_zh: row.title_zh as string,
+      title_ja: row.title_ja as string || '',
+      title_ko: row.title_ko as string || '',
       excerpt_en: row.excerpt_en as string,
       excerpt_zh: row.excerpt_zh as string,
+      excerpt_ja: row.excerpt_ja as string || '',
+      excerpt_ko: row.excerpt_ko as string || '',
       date: row.created_at as string,
       tags: row.tags as string[],
       featured_image: row.featured_image as string | null,
       content_en: '',
       content_zh: '',
+      content_ja: '',
+      content_ko: '',
     })) as BlogPost[];
   });
 }
@@ -221,13 +239,19 @@ export async function getBlogPost(slug: string, locale?: string): Promise<BlogPo
         slug: staticPost.meta.slug,
         title_en: staticPost.meta.title,
         title_zh: staticPost.meta.title,
+        title_ja: staticPost.meta.title,
+        title_ko: staticPost.meta.title,
         excerpt_en: staticPost.meta.excerpt,
         excerpt_zh: staticPost.meta.excerpt,
+        excerpt_ja: staticPost.meta.excerpt,
+        excerpt_ko: staticPost.meta.excerpt,
         date: staticPost.meta.date,
         tags: staticPost.meta.tags,
         featured_image: null as string | null,
         content_en: staticPost.content,
         content_zh: staticPost.content,
+        content_ja: staticPost.content,
+        content_ko: staticPost.content,
       } as BlogPost;
     }
 
@@ -261,13 +285,19 @@ export async function getBlogPost(slug: string, locale?: string): Promise<BlogPo
       slug: data.slug as string,
       title_en: data.title_en as string,
       title_zh: data.title_zh as string,
+      title_ja: data.title_ja as string || '',
+      title_ko: data.title_ko as string || '',
       excerpt_en: data.excerpt_en as string,
       excerpt_zh: data.excerpt_zh as string,
+      excerpt_ja: data.excerpt_ja as string || '',
+      excerpt_ko: data.excerpt_ko as string || '',
       date: data.created_at as string,
       tags: data.tags as string[],
       featured_image: data.featured_image as string | null,
       content_en: data.content_en as string,
       content_zh: data.content_zh as string,
+      content_ja: data.content_ja as string || '',
+      content_ko: data.content_ko as string || '',
     } as BlogPost;
   })();
 

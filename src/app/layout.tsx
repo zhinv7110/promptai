@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { JsonLd } from '@/components/seo/JsonLd';
-import { websiteSchema } from '@/lib/metadata';
+import { websiteSchema, alternateUrls } from '@/lib/metadata';
 import { Analytics } from '@vercel/analytics/react';
 
 const geistSans = Geist({
@@ -44,10 +44,7 @@ export const metadata: Metadata = {
     images: [`${BASE_URL}/og-image.png`],
   },
   alternates: {
-    languages: {
-      en: `${BASE_URL}/en`,
-      zh: `${BASE_URL}/zh`,
-    },
+    languages: alternateUrls(),
   },
 };
 

@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "title": "Thaumary AI - AI画像プロンプトツール＆ライブラリ",
+    "description": "AI画像プロンプトの生成、強化、発見が可能。Midjourney、Stable Diffusion、DALL-Eに対応した無料ツール。厳選されたプロンプトを提供するバイリンガルライブラリ。"
+  },
+  "nav": {
+    "home": "ホーム",
+    "tools": "ツール",
+    "promptLibrary": "プロンプトライブラリ",
+    "blog": "ブログ",
+    "about": "概要",
+    "pricing": "料金"
+  },
+  "home": {
+    "hero": {
+      "title": "完璧なAI画像プロンプトを創造する",
+      "subtitle": "Thaumaryの一つひとつの言葉は、シリコンインテリジェンスの無限のキャンバスを解き放つ魔法の呪文です。",
+      "badge": "無料AIプロンプトツールプラットフォーム",
+      "cta": {
+        "primary": "プロンプト生成を試す",
+        "secondary": "ライブラリを閲覧"
+      },
+      "search": "プロンプト、ツール、ガイドを検索...",
+      "tools": "AIツール",
+      "curated": "厳選プロンプト",
+      "tutorials": "チュートリアル"
+    },
+    "popularTools": {
+      "title": "人気のツール",
+      "subtitle": "完璧なプロンプト作成に必要なすべて"
+    },
+    "categories": {
+      "title": "カテゴリから探す",
+      "subtitle": "あらゆるスタイルと用途に対応するプロンプト"
+    },
+    "latestArticles": {
+      "title": "最新の記事",
+      "subtitle": "ヒント、チュートリアル、AIアートの洞察"
+    },
+    "popularPrompts": {
+      "title": "トレンドのプロンプト",
+      "subtitle": "コミュニティで今使われているプロンプト"
+    }
+  },
+  "tools": {
+    "promptGenerator": {
+      "name": "プロンプト生成",
+      "description": "キーワードからAI画像プロンプトを生成",
+      "input": "作成したい内容を入力...",
+      "generate": "プロンプトを生成",
+      "copy": "プロンプトをコピー"
+    },
+    "promptEnhancer": {
+      "name": "プロンプト強化",
+      "description": "既存のプロンプトを改善・最適化",
+      "input": "強化するプロンプトを貼り付け...",
+      "enhance": "プロンプトを強化",
+      "copy": "結果をコピー"
+    },
+    "styleGenerator": {
+      "name": "スタイル生成",
+      "description": "特定のアートスタイルでプロンプトを生成",
+      "input": "主題を説明...",
+      "generate": "スタイルプロンプトを生成",
+      "copy": "プロンプトをコピー"
+    },
+    "imageAnalyzer": {
+      "name": "画像分析",
+      "description": "画像を分析しプロンプトを提案",
+      "upload": "画像をアップロード",
+      "analyze": "分析"
+    },
+    "negativePrompt": {
+      "name": "ネガティブプロンプト生成",
+      "description": "よりクリーンな結果を得るためのネガティブプロンプトを生成",
+      "generate": "ネガティブプロンプトを生成",
+      "copy": "ネガティブプロンプトをコピー"
+    }
+  },
+  "common": {
+    "viewAll": "すべて表示",
+    "readMore": "続きを読む",
+    "copySuccess": "コピーしました！",
+    "loading": "読み込み中...",
+    "error": "エラーが発生しました",
+    "noResults": "結果が見つかりませんでした"
+  },
+  "footer": {
+    "about": "Thaumary AIは、AI画像プロンプトの作成と発見のための無料プラットフォームです。アーティスト、デザイナー、クリエイターのために作られました。",
+    "tools": "ツール",
+    "resources": "リソース",
+    "company": "会社情報",
+    "legal": "法的情報",
+    "privacy": "プライバシーポリシー",
+    "terms": "利用規約"
+  }
+}
