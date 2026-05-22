@@ -19,7 +19,15 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Schema ──────────────────────────────────────────────────────
 const REQUIRED_FIELDS = ['title_en', 'title_zh', 'slug', 'category', 'prompt_text'];
-const OPTIONAL_FIELDS = ['description_en', 'description_zh', 'tags', 'model', 'example_image_url', 'is_premium', 'is_featured', 'cover_image', 'gallery_images', 'image_alt', 'negative_prompt', 'generation_settings'];
+const OPTIONAL_FIELDS = ['description_en', 'description_zh', 'description_ja', 'description_ko', 'title_ja', 'title_ko', 'tags', 'model', 'example_image_url', 'is_premium', 'is_featured', 'cover_image', 'gallery_images', 'image_alt', 'aspect_ratio', 'negative_prompt', 'generation_settings'];
+
+// Known existing columns in DB — auto-strip unknown columns
+// Run supabase/migrations/008_visual_content.sql when adding new columns
+const KNOWN_COLUMNS = new Set([
+  'id', 'title_en', 'title_zh', 'slug', 'description_en', 'description_zh', 'category',
+  'tags', 'prompt_text', 'model', 'example_image_url', 'is_premium', 'likes_count',
+  'views_count', 'created_at', 'updated_at'
+]);
 
 // ── Main ────────────────────────────────────────────────────────
 async function main() {
@@ -111,7 +119,15 @@ async function main() {
   let updated = 0;
 
   for (let i = 0; i < valid.length; i += batchSize) {
-    const batch = valid.slice(i, i + batchSize);
+    let batch = valid.slice(i, i + batchSize);
+    // Strip columns that don't exist in DB
+    batch = batch.map((row) => {
+      const clean = {};
+      for (const [k, v] of Object.entries(row)) {
+        if (KNOWN_COLUMNS.has(k)) clean[k] = v;
+      }
+      return clean;
+    });
     const { data, error } = await supabase
       .from('prompts')
       .upsert(batch, { onConflict: 'slug', ignoreDuplicates: false })
