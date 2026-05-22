@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Hero from '@/components/home/Hero';
+import FeaturedShowcase from '@/components/home/FeaturedShowcase';
 import PopularTools from '@/components/home/PopularTools';
 import PromptCategories from '@/components/home/PromptCategories';
 import LatestArticles from '@/components/home/LatestArticles';
@@ -63,6 +64,7 @@ export default async function HomePage({ params }: Props) {
     <>
       <JsonLd data={websiteSchema()} />
       <Hero locale={locale} />
+      <FeaturedShowcase locale={locale} />
       <PopularTools locale={locale} />
       <PromptCategories />
       <LatestArticles locale={locale} />

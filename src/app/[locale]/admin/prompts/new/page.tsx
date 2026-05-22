@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import ImageUpload from '@/components/ui/ImageUpload';
 
 const CATEGORIES = ['portrait','landscape','fantasy','anime','architecture','abstract','photorealistic','concept-art'];
 const MODELS = ['midjourney','stable-diffusion','dalle3','flux','sdxl'];
@@ -18,12 +19,15 @@ export default function NewPromptPage() {
     description_en: '', description_zh: '',
     category: 'portrait', tags: '',
     prompt_text: '', model: 'midjourney',
-    is_premium: false,
+    negative_prompt: '', generation_settings: '',
+    cover_image: null as string | null,
+    gallery_images: [] as string[],
+    image_alt: '', is_premium: false, is_featured: false,
   });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
 
-  const handleChange = (field: string, value: string | boolean) => {
+  const handleChange = (field: string, value: string | boolean | null) => {
     setForm((prev) => {
       const next = { ...prev, [field]: value };
       if (field === 'title_en' && !prev.slug && typeof value === 'string') {
@@ -41,6 +45,10 @@ export default function NewPromptPage() {
     }
     setSaving(true);
     setError('');
+    let genSettings = null;
+    if (form.generation_settings.trim()) {
+      try { genSettings = JSON.parse(form.generation_settings); } catch { /* ignore */ }
+    }
     const res = await fetch('/api/admin/prompts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -48,15 +56,15 @@ export default function NewPromptPage() {
         ...form,
         tags: form.tags.split(',').map((t) => t.trim()).filter(Boolean),
         slug: form.slug || form.title_en.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        generation_settings: genSettings,
+        negative_prompt: form.negative_prompt || null,
+        image_alt: form.image_alt || null,
       }),
     });
     const data = await res.json();
     setSaving(false);
-    if (data.ok) {
-      router.push(`/${locale}/admin/prompts`);
-    } else {
-      setError(data.error || 'Save failed');
-    }
+    if (data.ok) router.push(`/${locale}/admin/prompts`);
+    else setError(data.error || 'Save failed');
   };
 
   const Field = ({ label, zh, required, children }: { label: string; zh: string; required?: boolean; children?: React.ReactNode }) => (
@@ -108,13 +116,44 @@ export default function NewPromptPage() {
             <textarea value={form.description_zh} onChange={(e) => handleChange('description_zh', e.target.value)} rows={2} className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none" />
           </Field>
         </div>
+
+        {/* Image upload */}
+        <div className="border border-zinc-200 dark:border-zinc-800 rounded-xl p-4">
+          <ImageUpload
+            coverImage={form.cover_image}
+            galleryImages={form.gallery_images}
+            onCoverChange={(url) => handleChange('cover_image', url)}
+            onGalleryChange={(urls) => setForm((p) => ({ ...p, gallery_images: urls }))}
+            isZh={isZh}
+          />
+        </div>
+
+        <Field label="Image Alt Text" zh="图片 Alt 文本">
+          <input value={form.image_alt} onChange={(e) => handleChange('image_alt', e.target.value)} className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50" placeholder="A cinematic portrait at golden hour..." />
+        </Field>
+
         <Field label="Prompt Text" zh="提示词文本" required>
           <textarea value={form.prompt_text} onChange={(e) => handleChange('prompt_text', e.target.value)} rows={6} className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-3 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none" placeholder="cinematic portrait photography, golden hour lighting..." />
         </Field>
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input type="checkbox" checked={form.is_premium} onChange={(e) => handleChange('is_premium', e.target.checked)} className="rounded" />
-          <span className="text-sm text-zinc-600 dark:text-zinc-400">{isZh ? 'Premium 标记' : 'Mark as Premium'}</span>
-        </label>
+
+        <Field label="Negative Prompt" zh="负面提示词">
+          <textarea value={form.negative_prompt} onChange={(e) => handleChange('negative_prompt', e.target.value)} rows={2} className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none" placeholder="ugly, deformed, blurry, low resolution..." />
+        </Field>
+
+        <Field label="Generation Settings (JSON)" zh="生成参数 (JSON)">
+          <textarea value={form.generation_settings} onChange={(e) => handleChange('generation_settings', e.target.value)} rows={2} className="w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-4 py-2.5 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none" placeholder='{"steps": 30, "cfg_scale": 7, "sampler": "DPM++ 2M Karras"}' />
+        </Field>
+
+        <div className="flex items-center gap-4">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={form.is_premium} onChange={(e) => handleChange('is_premium', e.target.checked)} className="rounded" />
+            <span className="text-sm text-zinc-600 dark:text-zinc-400">{isZh ? 'Premium 标记' : 'Mark as Premium'}</span>
+          </label>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input type="checkbox" checked={form.is_featured} onChange={(e) => handleChange('is_featured', e.target.checked)} className="rounded" />
+            <span className="text-sm text-zinc-600 dark:text-zinc-400">{isZh ? '精选标记' : 'Mark as Featured'}</span>
+          </label>
+        </div>
 
         {error && <p className="text-sm text-red-500">{error}</p>}
 

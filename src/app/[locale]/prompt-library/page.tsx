@@ -2,8 +2,9 @@ import { getPrompts } from '@/lib/data';
 import { CATEGORIES } from '@/lib/constants';
 import type { Prompt } from '@/types';
 import { localizedField, localizedLabel } from '@/lib/i18n-utils';
-import { Search, Sparkles, Heart, Eye } from 'lucide-react';
+import { Search, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import PromptCard from '@/components/prompts/PromptCard';
 
 const catNames: Record<string, { en: string; zh: string }> = {
   portrait: { en: 'Portrait', zh: '人像' },
@@ -116,36 +117,25 @@ export default async function PromptLibraryPage({ params, searchParams }: Props)
           <p className="mt-4 text-sm text-zinc-500">{isZh ? '没有找到匹配的提示词' : 'No prompts match your filters'}</p>
         </div>
       ) : (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {prompts.map((prompt: Prompt) => {
-            const title = localizedField(prompt, 'title', locale);
-            const description = localizedField(prompt, 'description', locale);
-            return (
-              <Link
-                key={prompt.id}
-                href={`/${locale}/prompt-library/${prompt.slug}`}
-                className="group rounded-2xl border border-zinc-200/80 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-900/70 backdrop-blur-xl p-5 hover:shadow-lg hover:border-purple-200 dark:hover:border-purple-800 transition-all"
-              >
-                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-50 line-clamp-1 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
-                  {title}
-                </h3>
-                {description && <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">{description}</p>}
-                <div className="mt-3 flex flex-wrap gap-1">
-                  {prompt.tags.map((tag: string) => (
-                    <span key={tag} className="inline-flex rounded-md bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5 text-xs text-zinc-500 dark:text-zinc-400">{tag}</span>
-                  ))}
-                </div>
-                <p className="mt-3 text-xs font-mono text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">{prompt.prompt_text}</p>
-                <div className="mt-3 flex items-center gap-3 text-xs text-zinc-400">
-                  <span className="inline-flex items-center gap-1 rounded-full bg-purple-50 dark:bg-purple-950/30 px-2 py-0.5 text-purple-600 dark:text-purple-400 font-medium">
-                    {prompt.model === 'stable-diffusion' ? 'SD' : prompt.model === 'dalle3' ? 'DALL-E 3' : prompt.model.charAt(0).toUpperCase() + prompt.model.slice(1)}
-                  </span>
-                  <span className="inline-flex items-center gap-1"><Heart className="h-3 w-3" /> {prompt.likes_count}</span>
-                  <span className="inline-flex items-center gap-1"><Eye className="h-3 w-3" /> {prompt.views_count}</span>
-                </div>
-              </Link>
-            );
-          })}
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {prompts.map((prompt: Prompt) => (
+            <PromptCard
+              key={prompt.id}
+              title={localizedField(prompt, 'title', locale)}
+              description={localizedField(prompt, 'description', locale)}
+              model={prompt.model}
+              likes={prompt.likes_count}
+              views={prompt.views_count}
+              tags={prompt.tags}
+              slug={prompt.slug}
+              locale={locale}
+              promptText={prompt.prompt_text}
+              coverImage={prompt.cover_image}
+              galleryImages={prompt.gallery_images}
+              isPremium={prompt.is_premium}
+              isFeatured={prompt.is_featured}
+            />
+          ))}
         </div>
       )}
     </div>

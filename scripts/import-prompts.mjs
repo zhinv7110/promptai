@@ -19,7 +19,7 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── Schema ──────────────────────────────────────────────────────
 const REQUIRED_FIELDS = ['title_en', 'title_zh', 'slug', 'category', 'prompt_text'];
-const OPTIONAL_FIELDS = ['description_en', 'description_zh', 'tags', 'model', 'example_image_url', 'is_premium'];
+const OPTIONAL_FIELDS = ['description_en', 'description_zh', 'tags', 'model', 'example_image_url', 'is_premium', 'is_featured', 'cover_image', 'gallery_images', 'image_alt', 'negative_prompt', 'generation_settings'];
 
 // ── Main ────────────────────────────────────────────────────────
 async function main() {
@@ -38,6 +38,13 @@ async function main() {
       description_zh: '可选描述',
       tags: ['tag1', 'tag2'],
       model: 'midjourney',
+      cover_image: 'https://example.com/image.jpg',
+      gallery_images: ['https://example.com/gallery1.jpg'],
+      image_alt: 'Description of image',
+      negative_prompt: 'ugly, deformed...',
+      generation_settings: { steps: 30, cfg_scale: 7 },
+      is_premium: false,
+      is_featured: false,
     }], null, 2));
     process.exit(1);
   }
@@ -76,7 +83,13 @@ async function main() {
       prompt_text: p.prompt_text,
       model: p.model || 'midjourney',
       example_image_url: p.example_image_url || null,
+      cover_image: p.cover_image || null,
+      gallery_images: p.gallery_images || null,
+      image_alt: p.image_alt || null,
+      negative_prompt: p.negative_prompt || null,
+      generation_settings: p.generation_settings || null,
       is_premium: p.is_premium || false,
+      is_featured: p.is_featured || false,
     });
   }
 

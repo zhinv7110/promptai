@@ -15,9 +15,16 @@ export interface Prompt {
   category: string;
   tags: string[];
   prompt_text: string;
+  negative_prompt?: string | null;
+  generation_settings?: Record<string, unknown> | null;
   model: string;
   example_image_url: string | null;
+  cover_image: string | null;
+  gallery_images: string[] | null;
+  image_alt: string | null;
+  aspect_ratio: string | null;
   is_premium: boolean;
+  is_featured: boolean;
   likes_count: number;
   views_count: number;
   created_at: string;

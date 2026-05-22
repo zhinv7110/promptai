@@ -149,6 +149,27 @@ export async function getTrendingPrompts(limit: number = 6): Promise<Prompt[]> {
   return getPrompts({ limit, orderBy: 'views_count' });
 }
 
+export async function getFeaturedPrompts(limit: number = 8): Promise<Prompt[]> {
+  return cached(`featured:${limit}`, async () => {
+    if (!(await isSupabaseAvailable())) {
+      const featured = samplePrompts.slice(0, limit);
+      return featured;
+    }
+    const supabase = await createServerSupabase();
+    const { data, error } = await supabase
+      .from('prompts')
+      .select('*')
+      .eq('is_featured', true)
+      .order('created_at', { ascending: false })
+      .limit(limit);
+    if (error) {
+      console.warn('Supabase getFeaturedPrompts error:', error.message);
+      return samplePrompts.slice(0, limit);
+    }
+    return (data as Prompt[]) || [];
+  });
+}
+
 // ── Blog ────────────────────────────────────────────────────────
 
 export async function getBlogPosts(locale?: string): Promise<BlogPost[]> {

@@ -283,7 +283,10 @@
   .particle,
   .hero-title,
   .btn-premium,
-  .search-glass {
+  .search-glass,
+  .card-zoom,
+  .card-glow,
+  .gallery-fade {
     animation: none !important;
   }
   .btn-premium:hover {
@@ -292,4 +295,145 @@
   .btn-glass:hover {
     transform: none;
   }
+}
+
+/* ════════════════════════════════════════════════════════════ */
+/* Premium Card Interactions — Thaumary Visual System         */
+/* ════════════════════════════════════════════════════════════ */
+
+/* ── Card zoom on hover ──────────────────────────────────── */
+
+.card-zoom {
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.card-zoom:hover {
+  transform: scale(1.02);
+}
+
+/* ── Card glow response ──────────────────────────────────── */
+
+.card-glow {
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+.card-glow:hover {
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.15), 0 20px 40px rgba(0, 0, 0, 0.08);
+  border-color: rgba(139, 92, 246, 0.3);
+}
+
+.dark .card-glow:hover {
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.2), 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Glass overlay for cards ─────────────────────────────── */
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.6) 100%);
+  transition: opacity 0.4s ease;
+}
+
+/* ── Multi-image hover transition ────────────────────────── */
+
+@keyframes gallery-fade {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  85%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.gallery-crossfade {
+  position: relative;
+}
+
+.gallery-crossfade img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.6s ease;
+}
+
+/* ── Cinematic parallax ──────────────────────────────────── */
+
+.parallax-container {
+  overflow: hidden;
+}
+.parallax-image {
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.parallax-container:hover .parallax-image {
+  transform: scale(1.06);
+}
+
+/* ── Spring motion for CTAs ──────────────────────────────── */
+
+.spring-hover {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.spring-hover:hover {
+  transform: scale(1.05);
+}
+.spring-hover:active {
+  transform: scale(0.97);
+}
+
+/* ── Blur placeholder ────────────────────────────────────── */
+
+.blur-placeholder {
+  filter: blur(20px);
+  transform: scale(1.1);
+}
+
+.blur-loaded {
+  filter: blur(0);
+  transform: scale(1);
+}
+
+/* ── Image lazy reveal ───────────────────────────────────── */
+
+@keyframes image-reveal {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.image-reveal {
+  animation: image-reveal 0.5s ease-out;
+}
+
+/* ── Lightbox backdrop ───────────────────────────────────── */
+
+.lightbox-backdrop {
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(8px);
+  animation: fade-in 0.3s ease-out;
+}
+
+/* ── Glow ring on hover ──────────────────────────────────── */
+
+.glow-ring {
+  position: relative;
+}
+.glow-ring::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: transparent;
+  transition: box-shadow 0.3s ease;
+}
+.glow-ring:hover::after {
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+}
+
+/* ── Upload zone pulse ───────────────────────────────────── */
+
+@keyframes upload-pulse {
+  0%, 100% { border-color: rgba(139, 92, 246, 0.3); }
+  50%      { border-color: rgba(139, 92, 246, 0.7); }
+}
+
+.upload-zone-active {
+  animation: upload-pulse 1.5s ease-in-out infinite;
 }

@@ -96,9 +96,10 @@ export default function AdminPromptsPage() {
           <table className="w-full">
             <thead>
               <tr className="border-b border-zinc-100 dark:border-zinc-800 text-xs text-zinc-500 uppercase">
+                <th className="text-left p-4 font-medium w-12"></th>
                 <th className="text-left p-4 font-medium">{isZh ? '标题' : 'Title'}</th>
                 <th className="text-left p-4 font-medium hidden sm:table-cell">{isZh ? '分类' : 'Category'}</th>
-                <th className="text-left p-4 font-medium hidden md:table-cell">{isZh ? '模型' : 'Model'}</th>
+                <th className="text-left p-4 font-medium hidden md:table-cell">{isZh ? '状态' : 'Status'}</th>
                 <th className="text-right p-4 font-medium">{isZh ? '操作' : 'Actions'}</th>
               </tr>
             </thead>
@@ -106,13 +107,28 @@ export default function AdminPromptsPage() {
               {prompts.map((p) => (
                 <tr key={p.id as string} className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50">
                   <td className="p-4">
+                    {p.cover_image ? (
+                      <img src={p.cover_image as string} alt="" className="w-10 h-10 rounded-lg object-cover" />
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center">
+                        <span className="text-white text-xs font-bold">AI</span>
+                      </div>
+                    )}
+                  </td>
+                  <td className="p-4">
                     <button onClick={() => router.push(`/${locale}/admin/prompts/${p.id}`)} className="text-left">
                       <p className="text-sm font-medium text-zinc-900 dark:text-zinc-50 line-clamp-1 hover:text-indigo-600">{p.title_en as string}</p>
                       <p className="text-xs text-zinc-400 line-clamp-1 mt-0.5">{p.title_zh as string}</p>
                     </button>
                   </td>
                   <td className="p-4 hidden sm:table-cell"><span className="text-xs rounded-full bg-zinc-100 dark:bg-zinc-800 px-2 py-0.5">{p.category as string}</span></td>
-                  <td className="p-4 hidden md:table-cell"><span className="text-xs text-zinc-500">{p.model as string}</span></td>
+                  <td className="p-4 hidden md:table-cell">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs text-zinc-500">{p.model as string}</span>
+                      {(p.is_featured as boolean) && <span className="text-xs rounded-full bg-purple-100 dark:bg-purple-900/50 px-1.5 py-0.5 text-purple-600 dark:text-purple-400">精选</span>}
+                      {(p.is_premium as boolean) && <span className="text-xs rounded-full bg-amber-100 dark:bg-amber-900/50 px-1.5 py-0.5 text-amber-600 dark:text-amber-400">Premium</span>}
+                    </div>
+                  </td>
                   <td className="p-4 text-right">
                     <div className="flex items-center justify-end gap-1">
                       <button onClick={() => router.push(`/${locale}/admin/prompts/${p.id}`)} className="p-2 rounded-lg text-zinc-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-colors"><Pencil className="h-4 w-4" /></button>
