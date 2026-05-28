@@ -24,9 +24,11 @@ const OPTIONAL_FIELDS = ['description_en', 'description_zh', 'description_ja', '
 // Known existing columns in DB — auto-strip unknown columns
 // Run supabase/migrations/008_visual_content.sql when adding new columns
 const KNOWN_COLUMNS = new Set([
-  'id', 'title_en', 'title_zh', 'slug', 'description_en', 'description_zh', 'category',
-  'tags', 'prompt_text', 'model', 'example_image_url', 'is_premium', 'likes_count',
-  'views_count', 'created_at', 'updated_at'
+  'id', 'title_en', 'title_zh', 'slug', 'description_en', 'description_zh',
+  'category', 'tags', 'prompt_text', 'model', 'example_image_url',
+  'is_premium', 'cover_image', 'gallery_images', 'image_alt',
+  'aspect_ratio', 'negative_prompt', 'generation_settings', 'is_featured',
+  'likes_count', 'views_count', 'created_at', 'updated_at'
 ]);
 
 // ── Main ────────────────────────────────────────────────────────
@@ -83,9 +85,13 @@ async function main() {
     valid.push({
       title_en: p.title_en,
       title_zh: p.title_zh,
+      title_ja: p.title_ja || null,
+      title_ko: p.title_ko || null,
       slug: p.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-'),
       description_en: p.description_en || null,
       description_zh: p.description_zh || null,
+      description_ja: p.description_ja || null,
+      description_ko: p.description_ko || null,
       category: p.category,
       tags: p.tags || [],
       prompt_text: p.prompt_text,
@@ -94,6 +100,7 @@ async function main() {
       cover_image: p.cover_image || null,
       gallery_images: p.gallery_images || null,
       image_alt: p.image_alt || null,
+      aspect_ratio: p.aspect_ratio || null,
       negative_prompt: p.negative_prompt || null,
       generation_settings: p.generation_settings || null,
       is_premium: p.is_premium || false,
