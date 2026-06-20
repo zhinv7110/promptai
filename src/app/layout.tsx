@@ -4,6 +4,7 @@ import './globals.css';
 import { JsonLd } from '@/components/seo/JsonLd';
 import { websiteSchema, alternateUrls } from '@/lib/metadata';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -65,6 +66,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50">
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
